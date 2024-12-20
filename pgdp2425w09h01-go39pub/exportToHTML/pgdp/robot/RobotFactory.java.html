@@ -1,0 +1,91 @@
+<html>
+<head>
+<title>RobotFactory.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cf8e6d;}
+.s1 { color: #bcbec4;}
+.s2 { color: #bcbec4;}
+.s3 { color: #2aacb8;}
+.s4 { color: #6aab73;}
+</style>
+</head>
+<body bgcolor="#1e1f22">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+RobotFactory.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">pgdp</span><span class="s2">.</span><span class="s1">robot</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">util</span><span class="s2">.</span><span class="s1">ArrayList</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">util</span><span class="s2">.</span><span class="s1">List</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">util</span><span class="s2">.</span><span class="s1">function</span><span class="s2">.</span><span class="s1">Consumer</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">util</span><span class="s2">.</span><span class="s1">function</span><span class="s2">.</span><span class="s1">Function</span><span class="s2">;</span>
+
+<span class="s0">public class </span><span class="s1">RobotFactory </span><span class="s2">{</span>
+
+    <span class="s0">public static </span><span class="s1">Robot makePanicPenguin</span><span class="s2">(</span><span class="s1">String name</span><span class="s2">, </span><span class="s0">double </span><span class="s1">rotation</span><span class="s2">, </span><span class="s1">Robot</span><span class="s2">.</span><span class="s1">FailureSimulator failureSimulator</span><span class="s2">){</span>
+        <span class="s1">Robot panic </span><span class="s2">= </span><span class="s0">new </span><span class="s1">Robot</span><span class="s2">(</span><span class="s1">name</span><span class="s2">,</span><span class="s3">0</span><span class="s2">,</span><span class="s3">0.8</span><span class="s2">,</span><span class="s1">failureSimulator</span><span class="s2">);</span>
+
+        <span class="s1">Memory</span><span class="s2">&lt;</span><span class="s1">Character</span><span class="s2">&gt; </span><span class="s1">memory </span><span class="s2">= </span><span class="s0">new </span><span class="s1">Memory</span><span class="s2">&lt;&gt;(</span><span class="s4">&quot;Terrain&quot;</span><span class="s2">,</span><span class="s4">' '</span><span class="s2">);</span>
+        <span class="s1">panic</span><span class="s2">.</span><span class="s1">createMemory</span><span class="s2">(</span><span class="s1">memory</span><span class="s2">);</span>
+
+        <span class="s1">Consumer</span><span class="s2">&lt;</span><span class="s1">Character</span><span class="s2">&gt; </span><span class="s1">processor </span><span class="s2">= </span><span class="s0">new </span><span class="s1">Consumer</span><span class="s2">&lt;</span><span class="s1">Character</span><span class="s2">&gt;() {</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">accept</span><span class="s2">(</span><span class="s1">Character c</span><span class="s2">) {</span>
+                <span class="s1">memory</span><span class="s2">.</span><span class="s1">set</span><span class="s2">(</span><span class="s1">c</span><span class="s2">);</span>
+            <span class="s2">}</span>
+        <span class="s2">};</span>
+
+        <span class="s1">TerrainSensor sensor </span><span class="s2">= </span><span class="s0">new </span><span class="s1">TerrainSensor</span><span class="s2">(</span><span class="s4">&quot;TerrainSensor&quot;</span><span class="s2">,</span><span class="s3">0.97</span><span class="s2">);</span>
+        <span class="s1">panic</span><span class="s2">.</span><span class="s1">attachSensor</span><span class="s2">(</span><span class="s1">sensor</span><span class="s2">);</span>
+        <span class="s1">sensor</span><span class="s2">.</span><span class="s1">setProcessor</span><span class="s2">(</span><span class="s1">processor</span><span class="s2">);</span>
+
+
+
+        <span class="s1">Function</span><span class="s2">&lt;</span><span class="s1">Robot</span><span class="s2">,</span><span class="s1">List</span><span class="s2">&lt;</span><span class="s1">Command</span><span class="s2">&gt;&gt; </span><span class="s1">program </span><span class="s2">= </span><span class="s0">new </span><span class="s1">Function</span><span class="s2">&lt;</span><span class="s1">Robot</span><span class="s2">, </span><span class="s1">List</span><span class="s2">&lt;</span><span class="s1">Command</span><span class="s2">&gt;&gt;() {</span>
+            <span class="s0">private </span><span class="s1">Command sayWorld </span><span class="s2">= </span><span class="s0">new </span><span class="s1">Command</span><span class="s2">() {</span>
+                <span class="s1">@Override</span>
+                <span class="s0">public boolean </span><span class="s1">execute</span><span class="s2">(</span><span class="s1">Robot robot</span><span class="s2">) {</span>
+                    <span class="s0">char </span><span class="s1">terrain </span><span class="s2">= </span><span class="s1">memory</span><span class="s2">.</span><span class="s1">get</span><span class="s2">();</span>
+                    <span class="s1">robot</span><span class="s2">.</span><span class="s1">getWorld</span><span class="s2">().</span><span class="s1">say</span><span class="s2">(</span><span class="s1">robot</span><span class="s2">, </span><span class="s1">String</span><span class="s2">.</span><span class="s1">valueOf</span><span class="s2">(</span><span class="s1">terrain</span><span class="s2">));</span>
+                    <span class="s0">return true</span><span class="s2">;</span>
+                <span class="s2">}</span>
+            <span class="s2">};</span>
+
+            <span class="s0">private </span><span class="s1">Command rotate </span><span class="s2">= </span><span class="s0">new </span><span class="s1">Command</span><span class="s2">() {</span>
+                <span class="s1">@Override</span>
+                <span class="s0">public boolean </span><span class="s1">execute</span><span class="s2">(</span><span class="s1">Robot robot</span><span class="s2">) {</span>
+                    <span class="s1">robot</span><span class="s2">.</span><span class="s1">turnBy</span><span class="s2">(</span><span class="s1">rotation</span><span class="s2">);</span>
+                    <span class="s0">return true</span><span class="s2">;</span>
+                <span class="s2">}</span>
+            <span class="s2">};</span>
+
+            <span class="s0">private </span><span class="s1">Command go </span><span class="s2">= </span><span class="s0">new </span><span class="s1">Command</span><span class="s2">() {</span>
+                <span class="s1">@Override</span>
+                <span class="s0">public boolean </span><span class="s1">execute</span><span class="s2">(</span><span class="s1">Robot robot</span><span class="s2">) {</span>
+                    <span class="s1">robot</span><span class="s2">.</span><span class="s1">go</span><span class="s2">(</span><span class="s3">0.1</span><span class="s2">);</span>
+                    <span class="s0">return true</span><span class="s2">;</span>
+                <span class="s2">}</span>
+            <span class="s2">};</span>
+
+
+            <span class="s0">private </span><span class="s1">List</span><span class="s2">&lt;</span><span class="s1">Command</span><span class="s2">&gt; </span><span class="s1">commandList </span><span class="s2">= </span><span class="s1">List</span><span class="s2">.</span><span class="s1">of</span><span class="s2">(</span><span class="s0">new </span><span class="s1">Command</span><span class="s2">[]{</span><span class="s1">sayWorld</span><span class="s2">, </span><span class="s1">rotate</span><span class="s2">, </span><span class="s1">go</span><span class="s2">});</span>
+
+            <span class="s1">@Override</span>
+            <span class="s0">public </span><span class="s1">List</span><span class="s2">&lt;</span><span class="s1">Command</span><span class="s2">&gt; </span><span class="s1">apply</span><span class="s2">(</span><span class="s1">Robot robot</span><span class="s2">) {</span>
+                <span class="s0">for</span><span class="s2">(</span><span class="s1">Command command </span><span class="s2">: </span><span class="s1">commandList</span><span class="s2">){</span>
+                    <span class="s1">command</span><span class="s2">.</span><span class="s1">execute</span><span class="s2">(</span><span class="s1">panic</span><span class="s2">);</span>
+                <span class="s2">}</span>
+                <span class="s0">return </span><span class="s1">List</span><span class="s2">.</span><span class="s1">of</span><span class="s2">();</span>
+            <span class="s2">}</span>
+        <span class="s2">};</span>
+
+        <span class="s1">panic</span><span class="s2">.</span><span class="s1">setProgram</span><span class="s2">(</span><span class="s1">program</span><span class="s2">);</span>
+        <span class="s0">return </span><span class="s1">panic</span><span class="s2">;</span>
+    <span class="s2">}</span>
+<span class="s2">}</span>
+</pre>
+</body>
+</html>

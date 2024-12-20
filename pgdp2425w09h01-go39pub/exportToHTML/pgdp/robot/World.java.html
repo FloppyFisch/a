@@ -1,0 +1,725 @@
+<html>
+<head>
+<title>World.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cf8e6d;}
+.s1 { color: #bcbec4;}
+.s2 { color: #bcbec4;}
+.s3 { color: #6aab73;}
+.s4 { color: #7a7e85;}
+.s5 { color: #2aacb8;}
+.s6 { color: #5f826b; font-style: italic;}
+</style>
+</head>
+<body bgcolor="#1e1f22">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+World.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">pgdp</span><span class="s2">.</span><span class="s1">robot</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">awt</span><span class="s2">.</span><span class="s1">BorderLayout</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">awt</span><span class="s2">.</span><span class="s1">Color</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">awt</span><span class="s2">.</span><span class="s1">Dimension</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">awt</span><span class="s2">.</span><span class="s1">FontMetrics</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">awt</span><span class="s2">.</span><span class="s1">Graphics</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">awt</span><span class="s2">.</span><span class="s1">Graphics2D</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">awt</span><span class="s2">.</span><span class="s1">event</span><span class="s2">.</span><span class="s1">KeyEvent</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">awt</span><span class="s2">.</span><span class="s1">event</span><span class="s2">.</span><span class="s1">KeyListener</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">awt</span><span class="s2">.</span><span class="s1">event</span><span class="s2">.</span><span class="s1">MouseAdapter</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">awt</span><span class="s2">.</span><span class="s1">event</span><span class="s2">.</span><span class="s1">MouseEvent</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">awt</span><span class="s2">.</span><span class="s1">event</span><span class="s2">.</span><span class="s1">MouseWheelEvent</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">awt</span><span class="s2">.</span><span class="s1">geom</span><span class="s2">.</span><span class="s1">AffineTransform</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">awt</span><span class="s2">.</span><span class="s1">image</span><span class="s2">.</span><span class="s1">BufferedImage</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">io</span><span class="s2">.</span><span class="s1">IOException</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">lang</span><span class="s2">.</span><span class="s1">reflect</span><span class="s2">.</span><span class="s1">InvocationTargetException</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">lang</span><span class="s2">.</span><span class="s1">reflect</span><span class="s2">.</span><span class="s1">Method</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">util</span><span class="s2">.</span><span class="s1">ArrayList</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">util</span><span class="s2">.</span><span class="s1">HashMap</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">util</span><span class="s2">.</span><span class="s1">List</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">util</span><span class="s2">.</span><span class="s1">Map</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">javax</span><span class="s2">.</span><span class="s1">imageio</span><span class="s2">.</span><span class="s1">ImageIO</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">javax</span><span class="s2">.</span><span class="s1">swing</span><span class="s2">.</span><span class="s1">BoxLayout</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">javax</span><span class="s2">.</span><span class="s1">swing</span><span class="s2">.</span><span class="s1">ButtonGroup</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">javax</span><span class="s2">.</span><span class="s1">swing</span><span class="s2">.</span><span class="s1">JButton</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">javax</span><span class="s2">.</span><span class="s1">swing</span><span class="s2">.</span><span class="s1">JFrame</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">javax</span><span class="s2">.</span><span class="s1">swing</span><span class="s2">.</span><span class="s1">JLabel</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">javax</span><span class="s2">.</span><span class="s1">swing</span><span class="s2">.</span><span class="s1">JPanel</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">javax</span><span class="s2">.</span><span class="s1">swing</span><span class="s2">.</span><span class="s1">JRadioButton</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">javax</span><span class="s2">.</span><span class="s1">swing</span><span class="s2">.</span><span class="s1">JToggleButton</span><span class="s2">;</span>
+
+<span class="s0">public class </span><span class="s1">World </span><span class="s2">{</span>
+	<span class="s0">private int </span><span class="s1">width</span><span class="s2">, </span><span class="s1">height</span><span class="s2">;</span>
+	<span class="s0">private char</span><span class="s2">[][] </span><span class="s1">terrain</span><span class="s2">;</span>
+	<span class="s0">private final char </span><span class="s1">FIRST_TERRAIN </span><span class="s2">= </span><span class="s3">' '</span><span class="s2">, </span><span class="s1">LAST_TERRAIN </span><span class="s2">= </span><span class="s3">'~'</span><span class="s2">; </span><span class="s4">// this covers the entire printable ASCII</span>
+	<span class="s0">private </span><span class="s1">Position</span><span class="s2">[] </span><span class="s1">spawnMarker </span><span class="s2">= </span><span class="s0">new </span><span class="s1">Position</span><span class="s2">[</span><span class="s5">10</span><span class="s2">]; </span><span class="s4">// from digits 0 to 9</span>
+
+	<span class="s0">private </span><span class="s1">List</span><span class="s2">&lt;</span><span class="s1">Robot</span><span class="s2">&gt; </span><span class="s1">robots </span><span class="s2">= </span><span class="s0">new </span><span class="s1">ArrayList</span><span class="s2">&lt;&gt;();</span>
+	<span class="s0">private </span><span class="s1">Controller controller </span><span class="s2">= </span><span class="s0">new </span><span class="s1">PhysicalController</span><span class="s2">(</span><span class="s0">this</span><span class="s2">);</span>
+	<span class="s0">private </span><span class="s1">Renderer renderer</span><span class="s2">;</span>
+
+	<span class="s0">private int </span><span class="s1">targetFrametime </span><span class="s2">= </span><span class="s5">16</span><span class="s2">;</span>
+	<span class="s0">private boolean </span><span class="s1">pause </span><span class="s2">= </span><span class="s0">true</span><span class="s2">;</span>
+	<span class="s0">private long </span><span class="s1">currentFrame </span><span class="s2">= </span><span class="s5">0</span><span class="s2">;</span>
+	<span class="s0">private long </span><span class="s1">pauseAtFrame </span><span class="s2">= -</span><span class="s5">1</span><span class="s2">; </span><span class="s4">// will pause if current frame equals this, set to &lt;0 to not use</span>
+
+	<span class="s0">private </span><span class="s1">Method work</span><span class="s2">, </span><span class="s1">memoryToString</span><span class="s2">;</span>
+
+	<span class="s0">private </span><span class="s1">String key</span><span class="s2">;</span>
+	<span class="s0">private int </span><span class="s1">keyPosX</span><span class="s2">, </span><span class="s1">keyPosY</span><span class="s2">;</span>
+	<span class="s0">private int </span><span class="s1">scepterPosX</span><span class="s2">, </span><span class="s1">scepterPosY</span><span class="s2">;</span>
+
+	<span class="s0">public static class </span><span class="s1">Scepter </span><span class="s2">{</span>
+
+		<span class="s0">private static final </span><span class="s1">Scepter INSTANCE </span><span class="s2">= </span><span class="s0">new </span><span class="s1">Scepter</span><span class="s2">();</span>
+
+		<span class="s0">private static </span><span class="s1">Scepter getInstance</span><span class="s2">() {</span>
+			<span class="s0">return </span><span class="s1">INSTANCE</span><span class="s2">;</span>
+		<span class="s2">}</span>
+
+		<span class="s0">private </span><span class="s1">Scepter</span><span class="s2">() {</span>
+		<span class="s2">}</span>
+
+		<span class="s1">@Override</span>
+		<span class="s0">public </span><span class="s1">String toString</span><span class="s2">() {</span>
+			<span class="s0">return </span><span class="s3">&quot;The one and only Scepter of Submission&quot;</span><span class="s2">;</span>
+		<span class="s2">}</span>
+	<span class="s2">}</span>
+
+	<span class="s0">public static interface </span><span class="s1">Controller </span><span class="s2">{</span>
+		<span class="s0">boolean </span><span class="s1">isKeyPressed</span><span class="s2">(</span><span class="s0">int </span><span class="s1">vkCode</span><span class="s2">);</span>
+
+		<span class="s0">boolean </span><span class="s1">isLeftMousePressed</span><span class="s2">();</span>
+
+		<span class="s0">boolean </span><span class="s1">isRightMousePressed</span><span class="s2">();</span>
+
+		<span class="s0">boolean </span><span class="s1">isMiddleMousePressed</span><span class="s2">();</span>
+
+		<span class="s1">Position getMousePos</span><span class="s2">();</span>
+
+		<span class="s0">void </span><span class="s1">keyTyped</span><span class="s2">(</span><span class="s1">KeyEvent e</span><span class="s2">);</span>
+
+		<span class="s0">void </span><span class="s1">keyPressed</span><span class="s2">(</span><span class="s1">KeyEvent e</span><span class="s2">);</span>
+
+		<span class="s0">void </span><span class="s1">keyReleased</span><span class="s2">(</span><span class="s1">KeyEvent e</span><span class="s2">);</span>
+
+		<span class="s0">void </span><span class="s1">mousePressed</span><span class="s2">(</span><span class="s1">MouseEvent e</span><span class="s2">);</span>
+
+		<span class="s0">void </span><span class="s1">mouseReleased</span><span class="s2">(</span><span class="s1">MouseEvent e</span><span class="s2">);</span>
+
+		<span class="s0">void </span><span class="s1">mouseMoved</span><span class="s2">(</span><span class="s1">MouseEvent e</span><span class="s2">);</span>
+
+		<span class="s0">void </span><span class="s1">mouseWheelMoved</span><span class="s2">(</span><span class="s1">MouseWheelEvent e</span><span class="s2">);</span>
+	<span class="s2">}</span>
+
+	<span class="s4">// Controller class listens to and stores all keyboard and mouse input events</span>
+	<span class="s4">// and has getters to ask for the state</span>
+	<span class="s0">public static class </span><span class="s1">PhysicalController </span><span class="s0">extends </span><span class="s1">MouseAdapter </span><span class="s0">implements </span><span class="s1">KeyListener</span><span class="s2">, </span><span class="s1">Controller </span><span class="s2">{</span>
+		<span class="s6">/// Internal Attributes</span>
+		<span class="s0">private </span><span class="s1">World world</span><span class="s2">;</span>
+		<span class="s0">private </span><span class="s1">Map</span><span class="s2">&lt;</span><span class="s1">Integer</span><span class="s2">, </span><span class="s1">Boolean</span><span class="s2">&gt; </span><span class="s1">isKeyPressed </span><span class="s2">= </span><span class="s0">new </span><span class="s1">HashMap</span><span class="s2">&lt;&gt;();</span>
+		<span class="s0">private boolean</span><span class="s2">[] </span><span class="s1">isMousePressed </span><span class="s2">= </span><span class="s0">new boolean</span><span class="s2">[</span><span class="s5">3</span><span class="s2">]; </span><span class="s4">// 0: M1, 1: M2, 2: M3</span>
+		<span class="s0">private </span><span class="s1">Position mousePos </span><span class="s2">= </span><span class="s0">new </span><span class="s1">Position</span><span class="s2">();</span>
+		<span class="s0">private double </span><span class="s1">zoomSpeed </span><span class="s2">= </span><span class="s5">1.05</span><span class="s2">;</span>
+
+		<span class="s0">public </span><span class="s1">PhysicalController</span><span class="s2">(</span><span class="s1">World world</span><span class="s2">) {</span>
+			<span class="s0">this</span><span class="s2">.</span><span class="s1">world </span><span class="s2">= </span><span class="s1">world</span><span class="s2">;</span>
+		<span class="s2">}</span>
+
+		<span class="s6">/// Status Getters: Use these to check mouse and keyboard status</span>
+		<span class="s0">public boolean </span><span class="s1">isKeyPressed</span><span class="s2">(</span><span class="s0">int </span><span class="s1">vkCode</span><span class="s2">) {</span>
+			<span class="s0">return </span><span class="s1">isKeyPressed</span><span class="s2">.</span><span class="s1">getOrDefault</span><span class="s2">(</span><span class="s1">vkCode</span><span class="s2">, </span><span class="s0">false</span><span class="s2">);</span>
+		<span class="s2">}</span>
+
+		<span class="s0">public boolean </span><span class="s1">isLeftMousePressed</span><span class="s2">() {</span>
+			<span class="s0">return </span><span class="s1">isMousePressed</span><span class="s2">[</span><span class="s5">0</span><span class="s2">];</span>
+		<span class="s2">}</span>
+
+		<span class="s0">public boolean </span><span class="s1">isRightMousePressed</span><span class="s2">() {</span>
+			<span class="s0">return </span><span class="s1">isMousePressed</span><span class="s2">[</span><span class="s5">1</span><span class="s2">];</span>
+		<span class="s2">}</span>
+
+		<span class="s0">public boolean </span><span class="s1">isMiddleMousePressed</span><span class="s2">() {</span>
+			<span class="s0">return </span><span class="s1">isMousePressed</span><span class="s2">[</span><span class="s5">2</span><span class="s2">];</span>
+		<span class="s2">}</span>
+
+		<span class="s0">public </span><span class="s1">Position getMousePos</span><span class="s2">() {</span>
+			<span class="s0">return new </span><span class="s1">Position</span><span class="s2">(</span><span class="s1">mousePos</span><span class="s2">);</span>
+		<span class="s2">}</span>
+
+		<span class="s6">/// Event Handlers: The GUI uses these methods to handle user input and remember</span>
+		<span class="s6">/// the states</span>
+		<span class="s1">@Override</span>
+		<span class="s0">public void </span><span class="s1">keyTyped</span><span class="s2">(</span><span class="s1">KeyEvent e</span><span class="s2">) {</span>
+		<span class="s2">}</span>
+
+		<span class="s1">@Override</span>
+		<span class="s0">public void </span><span class="s1">keyPressed</span><span class="s2">(</span><span class="s1">KeyEvent e</span><span class="s2">) {</span>
+			<span class="s1">isKeyPressed</span><span class="s2">.</span><span class="s1">put</span><span class="s2">(</span><span class="s1">e</span><span class="s2">.</span><span class="s1">getKeyCode</span><span class="s2">(), </span><span class="s0">true</span><span class="s2">);</span>
+
+			<span class="s4">// default keybindings for the UI buttons, you can remove or change these if you</span>
+			<span class="s4">// want</span>
+			<span class="s0">if </span><span class="s2">(</span><span class="s1">e</span><span class="s2">.</span><span class="s1">getKeyCode</span><span class="s2">() == </span><span class="s1">KeyEvent</span><span class="s2">.</span><span class="s1">VK_SPACE</span><span class="s2">) {</span>
+				<span class="s1">world</span><span class="s2">.</span><span class="s1">pause </span><span class="s2">= </span><span class="s1">world</span><span class="s2">.</span><span class="s1">currentFrame </span><span class="s2">!= </span><span class="s1">world</span><span class="s2">.</span><span class="s1">pauseAtFrame </span><span class="s2">&amp;&amp; !</span><span class="s1">world</span><span class="s2">.</span><span class="s1">pause</span><span class="s2">;</span>
+				<span class="s1">world</span><span class="s2">.</span><span class="s1">pauseAtFrame </span><span class="s2">= -</span><span class="s5">1</span><span class="s2">;</span>
+			<span class="s2">} </span><span class="s0">else if </span><span class="s2">(</span><span class="s1">e</span><span class="s2">.</span><span class="s1">getKeyCode</span><span class="s2">() == </span><span class="s1">KeyEvent</span><span class="s2">.</span><span class="s1">VK_ENTER</span><span class="s2">) {</span>
+				<span class="s1">world</span><span class="s2">.</span><span class="s1">pauseAtFrame </span><span class="s2">= </span><span class="s1">world</span><span class="s2">.</span><span class="s1">currentFrame </span><span class="s2">+ </span><span class="s5">1</span><span class="s2">;</span>
+				<span class="s1">world</span><span class="s2">.</span><span class="s1">pause </span><span class="s2">= </span><span class="s0">false</span><span class="s2">;</span>
+			<span class="s2">}</span>
+		<span class="s2">}</span>
+
+		<span class="s1">@Override</span>
+		<span class="s0">public void </span><span class="s1">keyReleased</span><span class="s2">(</span><span class="s1">KeyEvent e</span><span class="s2">) {</span>
+			<span class="s1">isKeyPressed</span><span class="s2">.</span><span class="s1">put</span><span class="s2">(</span><span class="s1">e</span><span class="s2">.</span><span class="s1">getKeyCode</span><span class="s2">(), </span><span class="s0">false</span><span class="s2">);</span>
+		<span class="s2">}</span>
+
+		<span class="s1">@Override</span>
+		<span class="s0">public void </span><span class="s1">mousePressed</span><span class="s2">(</span><span class="s1">MouseEvent e</span><span class="s2">) {</span>
+			<span class="s1">isMousePressed</span><span class="s2">[</span><span class="s1">e</span><span class="s2">.</span><span class="s1">getButton</span><span class="s2">() - </span><span class="s5">1</span><span class="s2">] = </span><span class="s0">true</span><span class="s2">;</span>
+		<span class="s2">}</span>
+
+		<span class="s1">@Override</span>
+		<span class="s0">public void </span><span class="s1">mouseReleased</span><span class="s2">(</span><span class="s1">MouseEvent e</span><span class="s2">) {</span>
+			<span class="s1">isMousePressed</span><span class="s2">[</span><span class="s1">e</span><span class="s2">.</span><span class="s1">getButton</span><span class="s2">() - </span><span class="s5">1</span><span class="s2">] = </span><span class="s0">false</span><span class="s2">;</span>
+		<span class="s2">}</span>
+
+		<span class="s1">@Override</span>
+		<span class="s0">public void </span><span class="s1">mouseMoved</span><span class="s2">(</span><span class="s1">MouseEvent e</span><span class="s2">) {</span>
+			<span class="s1">mousePos</span><span class="s2">.</span><span class="s1">x </span><span class="s2">= (</span><span class="s1">e</span><span class="s2">.</span><span class="s1">getX</span><span class="s2">() - </span><span class="s1">world</span><span class="s2">.</span><span class="s1">renderer</span><span class="s2">.</span><span class="s1">cameraX</span><span class="s2">) / </span><span class="s1">world</span><span class="s2">.</span><span class="s1">renderer</span><span class="s2">.</span><span class="s1">scale</span><span class="s2">;</span>
+			<span class="s1">mousePos</span><span class="s2">.</span><span class="s1">y </span><span class="s2">= (</span><span class="s1">e</span><span class="s2">.</span><span class="s1">getY</span><span class="s2">() - </span><span class="s1">world</span><span class="s2">.</span><span class="s1">renderer</span><span class="s2">.</span><span class="s1">cameraY</span><span class="s2">) / </span><span class="s1">world</span><span class="s2">.</span><span class="s1">renderer</span><span class="s2">.</span><span class="s1">scale</span><span class="s2">;</span>
+		<span class="s2">}</span>
+
+		<span class="s1">@Override</span>
+		<span class="s0">public void </span><span class="s1">mouseWheelMoved</span><span class="s2">(</span><span class="s1">MouseWheelEvent e</span><span class="s2">) {</span>
+			<span class="s1">world</span><span class="s2">.</span><span class="s1">renderer</span><span class="s2">.</span><span class="s1">scale </span><span class="s2">= </span><span class="s1">Math</span><span class="s2">.</span><span class="s1">max</span><span class="s2">(</span><span class="s1">world</span><span class="s2">.</span><span class="s1">renderer</span><span class="s2">.</span><span class="s1">minScale</span><span class="s2">, </span><span class="s1">Math</span><span class="s2">.</span><span class="s1">min</span><span class="s2">(</span><span class="s1">world</span><span class="s2">.</span><span class="s1">renderer</span><span class="s2">.</span><span class="s1">maxScale</span><span class="s2">,</span>
+					<span class="s1">world</span><span class="s2">.</span><span class="s1">renderer</span><span class="s2">.</span><span class="s1">scale </span><span class="s2">* </span><span class="s1">Math</span><span class="s2">.</span><span class="s1">pow</span><span class="s2">(</span><span class="s1">zoomSpeed</span><span class="s2">, -</span><span class="s1">e</span><span class="s2">.</span><span class="s1">getPreciseWheelRotation</span><span class="s2">())));</span>
+			<span class="s4">// render</span>
+			<span class="s1">world</span><span class="s2">.</span><span class="s1">renderer</span><span class="s2">.</span><span class="s1">frame</span><span class="s2">.</span><span class="s1">revalidate</span><span class="s2">();</span>
+			<span class="s1">world</span><span class="s2">.</span><span class="s1">renderer</span><span class="s2">.</span><span class="s1">frame</span><span class="s2">.</span><span class="s1">repaint</span><span class="s2">();</span>
+		<span class="s2">}</span>
+	<span class="s2">}</span>
+
+	<span class="s4">// constructs the world from the &quot;2D&quot; String</span>
+	<span class="s0">public </span><span class="s1">World</span><span class="s2">(</span><span class="s1">String mapData</span><span class="s2">) {</span>
+		<span class="s0">this</span><span class="s2">(</span><span class="s1">mapData</span><span class="s2">, </span><span class="s0">true</span><span class="s2">);</span>
+	<span class="s2">}</span>
+
+	<span class="s0">public </span><span class="s1">World</span><span class="s2">(</span><span class="s1">String mapData</span><span class="s2">, </span><span class="s1">Controller controller</span><span class="s2">) {</span>
+		<span class="s0">this</span><span class="s2">(</span><span class="s1">mapData</span><span class="s2">, </span><span class="s0">true</span><span class="s2">);</span>
+		<span class="s0">this</span><span class="s2">.</span><span class="s1">controller </span><span class="s2">= </span><span class="s1">controller</span><span class="s2">;</span>
+	<span class="s2">}</span>
+
+	<span class="s0">public </span><span class="s1">World</span><span class="s2">(</span><span class="s1">String mapData</span><span class="s2">, </span><span class="s1">String key</span><span class="s2">, </span><span class="s0">int </span><span class="s1">keyPosX</span><span class="s2">, </span><span class="s0">int </span><span class="s1">keyPosY</span><span class="s2">, </span><span class="s0">int </span><span class="s1">scepterPosX</span><span class="s2">, </span><span class="s0">int </span><span class="s1">scepterPosY</span><span class="s2">) {</span>
+		<span class="s0">this</span><span class="s2">(</span><span class="s1">mapData</span><span class="s2">, </span><span class="s0">true</span><span class="s2">);</span>
+		<span class="s0">this</span><span class="s2">.</span><span class="s1">key </span><span class="s2">= </span><span class="s1">key</span><span class="s2">;</span>
+		<span class="s0">this</span><span class="s2">.</span><span class="s1">keyPosX </span><span class="s2">= </span><span class="s1">keyPosX</span><span class="s2">;</span>
+		<span class="s0">this</span><span class="s2">.</span><span class="s1">keyPosY </span><span class="s2">= </span><span class="s1">keyPosY</span><span class="s2">;</span>
+		<span class="s0">this</span><span class="s2">.</span><span class="s1">scepterPosX </span><span class="s2">= </span><span class="s1">scepterPosX</span><span class="s2">;</span>
+		<span class="s0">this</span><span class="s2">.</span><span class="s1">scepterPosY </span><span class="s2">= </span><span class="s1">scepterPosY</span><span class="s2">;</span>
+	<span class="s2">}</span>
+
+	<span class="s0">public </span><span class="s1">World</span><span class="s2">(</span><span class="s1">String mapData</span><span class="s2">, </span><span class="s1">Controller controller</span><span class="s2">, </span><span class="s1">String key</span><span class="s2">, </span><span class="s0">int </span><span class="s1">keyPosX</span><span class="s2">, </span><span class="s0">int </span><span class="s1">keyPosY</span><span class="s2">, </span><span class="s0">int </span><span class="s1">scepterPosX</span><span class="s2">,</span>
+			<span class="s0">int </span><span class="s1">scepterPosY</span><span class="s2">, </span><span class="s0">boolean </span><span class="s1">shouldRender</span><span class="s2">) {</span>
+		<span class="s0">this</span><span class="s2">(</span><span class="s1">mapData</span><span class="s2">, </span><span class="s1">shouldRender</span><span class="s2">);</span>
+		<span class="s0">this</span><span class="s2">.</span><span class="s1">key </span><span class="s2">= </span><span class="s1">key</span><span class="s2">;</span>
+		<span class="s0">this</span><span class="s2">.</span><span class="s1">keyPosX </span><span class="s2">= </span><span class="s1">keyPosX</span><span class="s2">;</span>
+		<span class="s0">this</span><span class="s2">.</span><span class="s1">keyPosY </span><span class="s2">= </span><span class="s1">keyPosY</span><span class="s2">;</span>
+		<span class="s0">this</span><span class="s2">.</span><span class="s1">scepterPosX </span><span class="s2">= </span><span class="s1">scepterPosX</span><span class="s2">;</span>
+		<span class="s0">this</span><span class="s2">.</span><span class="s1">scepterPosY </span><span class="s2">= </span><span class="s1">scepterPosY</span><span class="s2">;</span>
+		<span class="s0">this</span><span class="s2">.</span><span class="s1">controller </span><span class="s2">= </span><span class="s1">controller</span><span class="s2">;</span>
+	<span class="s2">}</span>
+
+	<span class="s4">// you should probably leave shouldRender to true, otherwise you will not see</span>
+	<span class="s4">// anything</span>
+	<span class="s0">public </span><span class="s1">World</span><span class="s2">(</span><span class="s1">String mapData</span><span class="s2">, </span><span class="s0">boolean </span><span class="s1">shouldRender</span><span class="s2">) {</span>
+		<span class="s0">if </span><span class="s2">(</span><span class="s1">shouldRender</span><span class="s2">)</span>
+			<span class="s1">renderer </span><span class="s2">= </span><span class="s0">new </span><span class="s1">Renderer</span><span class="s2">();</span>
+
+		<span class="s1">width </span><span class="s2">= </span><span class="s1">mapData</span><span class="s2">.</span><span class="s1">lines</span><span class="s2">().</span><span class="s1">mapToInt</span><span class="s2">(</span><span class="s1">String::length</span><span class="s2">).</span><span class="s1">max</span><span class="s2">().</span><span class="s1">orElseThrow</span><span class="s2">();</span>
+		<span class="s1">height </span><span class="s2">= (</span><span class="s0">int</span><span class="s2">) </span><span class="s1">mapData</span><span class="s2">.</span><span class="s1">lines</span><span class="s2">().</span><span class="s1">count</span><span class="s2">();</span>
+
+		<span class="s1">terrain </span><span class="s2">= </span><span class="s0">new char</span><span class="s2">[</span><span class="s1">width</span><span class="s2">][</span><span class="s1">height</span><span class="s2">];</span>
+		<span class="s1">String</span><span class="s2">[] </span><span class="s1">rows </span><span class="s2">= </span><span class="s1">mapData</span><span class="s2">.</span><span class="s1">lines</span><span class="s2">().</span><span class="s1">map</span><span class="s2">(</span><span class="s1">s -&gt; s </span><span class="s2">+ </span><span class="s3">&quot; &quot;</span><span class="s2">.</span><span class="s1">repeat</span><span class="s2">(</span><span class="s1">width </span><span class="s2">- </span><span class="s1">s</span><span class="s2">.</span><span class="s1">length</span><span class="s2">())).</span><span class="s1">toArray</span><span class="s2">(</span><span class="s1">String</span><span class="s2">[]</span><span class="s1">::</span><span class="s0">new</span><span class="s2">);</span>
+		<span class="s0">for </span><span class="s2">(</span><span class="s0">int </span><span class="s1">y </span><span class="s2">= </span><span class="s5">0</span><span class="s2">; </span><span class="s1">y </span><span class="s2">&lt; </span><span class="s1">height</span><span class="s2">; </span><span class="s1">y</span><span class="s2">++) {</span>
+			<span class="s0">for </span><span class="s2">(</span><span class="s0">int </span><span class="s1">x </span><span class="s2">= </span><span class="s5">0</span><span class="s2">; </span><span class="s1">x </span><span class="s2">&lt; </span><span class="s1">width</span><span class="s2">; </span><span class="s1">x</span><span class="s2">++) {</span>
+				<span class="s0">char </span><span class="s1">c </span><span class="s2">= </span><span class="s1">rows</span><span class="s2">[</span><span class="s1">y</span><span class="s2">].</span><span class="s1">charAt</span><span class="s2">(</span><span class="s1">x</span><span class="s2">);</span>
+				<span class="s0">if </span><span class="s2">(</span><span class="s3">'0' </span><span class="s2">&lt;= </span><span class="s1">c </span><span class="s2">&amp;&amp; </span><span class="s1">c </span><span class="s2">&lt;= </span><span class="s3">'9'</span><span class="s2">)</span>
+					<span class="s1">spawnMarker</span><span class="s2">[</span><span class="s1">c </span><span class="s2">- </span><span class="s3">'0'</span><span class="s2">] = </span><span class="s0">new </span><span class="s1">Position</span><span class="s2">(</span><span class="s1">x </span><span class="s2">+ </span><span class="s5">0.5</span><span class="s2">, </span><span class="s1">y </span><span class="s2">+ </span><span class="s5">0.5</span><span class="s2">);</span>
+				<span class="s1">terrain</span><span class="s2">[</span><span class="s1">x</span><span class="s2">][</span><span class="s1">y</span><span class="s2">] = </span><span class="s1">c</span><span class="s2">;</span>
+			<span class="s2">}</span>
+		<span class="s2">}</span>
+
+		<span class="s0">try </span><span class="s2">{</span>
+			<span class="s1">work </span><span class="s2">= </span><span class="s1">Robot</span><span class="s2">.</span><span class="s0">class</span><span class="s2">.</span><span class="s1">getMethod</span><span class="s2">(</span><span class="s3">&quot;work&quot;</span><span class="s2">);</span>
+			<span class="s1">memoryToString </span><span class="s2">= </span><span class="s1">Robot</span><span class="s2">.</span><span class="s0">class</span><span class="s2">.</span><span class="s1">getMethod</span><span class="s2">(</span><span class="s3">&quot;memoryToString&quot;</span><span class="s2">);</span>
+		<span class="s2">} </span><span class="s0">catch </span><span class="s2">(</span><span class="s1">NoSuchMethodException e</span><span class="s2">) {</span>
+			<span class="s4">/* student has not implemented these methods yet */</span>
+		<span class="s2">}</span>
+	<span class="s2">}</span>
+
+	<span class="s0">public </span><span class="s1">String getKey</span><span class="s2">(</span><span class="s0">int </span><span class="s1">x</span><span class="s2">, </span><span class="s0">int </span><span class="s1">y</span><span class="s2">) {</span>
+		<span class="s0">if </span><span class="s2">(</span><span class="s1">keyPosX </span><span class="s2">== </span><span class="s1">x </span><span class="s2">&amp;&amp; </span><span class="s1">keyPosY </span><span class="s2">== </span><span class="s1">y</span><span class="s2">) {</span>
+			<span class="s0">return </span><span class="s1">key</span><span class="s2">;</span>
+		<span class="s2">}</span>
+		<span class="s0">return </span><span class="s3">&quot;Nice try!&quot;</span><span class="s2">;</span>
+	<span class="s2">}</span>
+
+	<span class="s0">public </span><span class="s1">Scepter getScepter</span><span class="s2">(</span><span class="s0">int </span><span class="s1">x</span><span class="s2">, </span><span class="s0">int </span><span class="s1">y</span><span class="s2">, </span><span class="s1">String key</span><span class="s2">) {</span>
+		<span class="s0">if </span><span class="s2">(</span><span class="s1">scepterPosX </span><span class="s2">== </span><span class="s1">x </span><span class="s2">&amp;&amp; </span><span class="s1">scepterPosY </span><span class="s2">== </span><span class="s1">y </span><span class="s2">&amp;&amp; </span><span class="s0">this</span><span class="s2">.</span><span class="s1">key</span><span class="s2">.</span><span class="s1">equals</span><span class="s2">(</span><span class="s1">key</span><span class="s2">)) {</span>
+			<span class="s0">return </span><span class="s1">Scepter</span><span class="s2">.</span><span class="s1">getInstance</span><span class="s2">();</span>
+		<span class="s2">} </span><span class="s0">else </span><span class="s2">{</span>
+			<span class="s0">return null</span><span class="s2">;</span>
+		<span class="s2">}</span>
+	<span class="s2">}</span>
+
+	<span class="s0">public </span><span class="s1">Controller getController</span><span class="s2">() {</span>
+		<span class="s0">return </span><span class="s1">controller</span><span class="s2">;</span>
+	<span class="s2">}</span>
+
+	<span class="s0">public </span><span class="s1">List</span><span class="s2">&lt;</span><span class="s1">Robot</span><span class="s2">&gt; </span><span class="s1">getRobots</span><span class="s2">() {</span>
+		<span class="s0">return </span><span class="s1">robots</span><span class="s2">;</span>
+	<span class="s2">}</span>
+
+	<span class="s0">public int </span><span class="s1">getWidth</span><span class="s2">() {</span>
+		<span class="s0">return </span><span class="s1">width</span><span class="s2">;</span>
+	<span class="s2">}</span>
+
+	<span class="s0">public int </span><span class="s1">getHeight</span><span class="s2">() {</span>
+		<span class="s0">return </span><span class="s1">height</span><span class="s2">;</span>
+	<span class="s2">}</span>
+
+	<span class="s0">public char </span><span class="s1">getTerrain</span><span class="s2">(</span><span class="s1">Position pos</span><span class="s2">) {</span>
+		<span class="s0">return </span><span class="s1">getTerrain</span><span class="s2">(</span><span class="s1">pos</span><span class="s2">.</span><span class="s1">x</span><span class="s2">, </span><span class="s1">pos</span><span class="s2">.</span><span class="s1">y</span><span class="s2">);</span>
+	<span class="s2">}</span>
+
+	<span class="s0">public char </span><span class="s1">getTerrain</span><span class="s2">(</span><span class="s0">double </span><span class="s1">x</span><span class="s2">, </span><span class="s0">double </span><span class="s1">y</span><span class="s2">) {</span>
+		<span class="s0">int </span><span class="s1">xR </span><span class="s2">= (</span><span class="s0">int</span><span class="s2">) </span><span class="s1">Math</span><span class="s2">.</span><span class="s1">floor</span><span class="s2">(</span><span class="s1">x</span><span class="s2">), </span><span class="s1">yR </span><span class="s2">= (</span><span class="s0">int</span><span class="s2">) </span><span class="s1">Math</span><span class="s2">.</span><span class="s1">floor</span><span class="s2">(</span><span class="s1">y</span><span class="s2">); </span><span class="s4">// we NEED to floor, for negative numbers!</span>
+
+		<span class="s4">// it's only SPACE out there when you leave the world...</span>
+		<span class="s0">return </span><span class="s5">0 </span><span class="s2">&lt;= </span><span class="s1">xR </span><span class="s2">&amp;&amp; </span><span class="s1">xR </span><span class="s2">&lt; </span><span class="s1">width </span><span class="s2">&amp;&amp; </span><span class="s5">0 </span><span class="s2">&lt;= </span><span class="s1">yR </span><span class="s2">&amp;&amp; </span><span class="s1">yR </span><span class="s2">&lt; </span><span class="s1">height </span><span class="s2">? </span><span class="s1">terrain</span><span class="s2">[</span><span class="s1">xR</span><span class="s2">][</span><span class="s1">yR</span><span class="s2">] : </span><span class="s3">' '</span><span class="s2">;</span>
+	<span class="s2">}</span>
+
+	<span class="s0">public boolean </span><span class="s1">setTerrain</span><span class="s2">(</span><span class="s1">Position pos</span><span class="s2">, </span><span class="s0">char </span><span class="s1">newType</span><span class="s2">) {</span>
+		<span class="s0">int </span><span class="s1">xR </span><span class="s2">= (</span><span class="s0">int</span><span class="s2">) </span><span class="s1">Math</span><span class="s2">.</span><span class="s1">floor</span><span class="s2">(</span><span class="s1">pos</span><span class="s2">.</span><span class="s1">x</span><span class="s2">), </span><span class="s1">yR </span><span class="s2">= (</span><span class="s0">int</span><span class="s2">) </span><span class="s1">Math</span><span class="s2">.</span><span class="s1">floor</span><span class="s2">(</span><span class="s1">pos</span><span class="s2">.</span><span class="s1">y</span><span class="s2">); </span><span class="s4">// we NEED to floor, for negative numbers!</span>
+
+		<span class="s4">// can't paint out of bounds</span>
+		<span class="s0">if </span><span class="s2">(!(</span><span class="s5">0 </span><span class="s2">&lt;= </span><span class="s1">xR </span><span class="s2">&amp;&amp; </span><span class="s1">xR </span><span class="s2">&lt; </span><span class="s1">width </span><span class="s2">&amp;&amp; </span><span class="s5">0 </span><span class="s2">&lt;= </span><span class="s1">yR </span><span class="s2">&amp;&amp; </span><span class="s1">yR </span><span class="s2">&lt; </span><span class="s1">height</span><span class="s2">))</span>
+			<span class="s0">return false</span><span class="s2">;</span>
+
+		<span class="s4">// you can't put a wall where a robot is</span>
+		<span class="s0">if </span><span class="s2">(</span><span class="s1">newType </span><span class="s2">== </span><span class="s3">'#'</span><span class="s2">)</span>
+			<span class="s0">for </span><span class="s2">(</span><span class="s1">Robot robot </span><span class="s2">: </span><span class="s1">robots</span><span class="s2">) {</span>
+				<span class="s0">double </span><span class="s1">dist </span><span class="s2">= </span><span class="s1">robot</span><span class="s2">.</span><span class="s1">getPosition</span><span class="s2">().</span><span class="s1">distanceTo</span><span class="s2">(</span><span class="s0">new </span><span class="s1">Position</span><span class="s2">(</span><span class="s1">xR </span><span class="s2">+ </span><span class="s5">0.5</span><span class="s2">, </span><span class="s1">yR </span><span class="s2">+ </span><span class="s5">0.5</span><span class="s2">));</span>
+				<span class="s0">if </span><span class="s2">(</span><span class="s1">dist </span><span class="s2">&lt; </span><span class="s1">robot</span><span class="s2">.</span><span class="s1">getSize</span><span class="s2">() / </span><span class="s5">2 </span><span class="s2">+ </span><span class="s5">0.5</span><span class="s2">)</span>
+					<span class="s0">return false</span><span class="s2">;</span>
+			<span class="s2">}</span>
+
+		<span class="s1">terrain</span><span class="s2">[</span><span class="s1">xR</span><span class="s2">][</span><span class="s1">yR</span><span class="s2">] = </span><span class="s1">newType</span><span class="s2">;</span>
+		<span class="s0">return true</span><span class="s2">;</span>
+	<span class="s2">}</span>
+
+	<span class="s0">public void </span><span class="s1">say</span><span class="s2">(</span><span class="s1">Robot robot</span><span class="s2">, </span><span class="s1">String str</span><span class="s2">) {</span>
+		<span class="s0">if </span><span class="s2">(</span><span class="s1">renderer </span><span class="s2">!= </span><span class="s0">null</span><span class="s2">) {</span>
+			<span class="s1">renderer</span><span class="s2">.</span><span class="s1">speechBubble</span><span class="s2">.</span><span class="s1">put</span><span class="s2">(</span><span class="s1">robot</span><span class="s2">, </span><span class="s1">str</span><span class="s2">);</span>
+			<span class="s1">renderer</span><span class="s2">.</span><span class="s1">speechTimer</span><span class="s2">.</span><span class="s1">put</span><span class="s2">(</span><span class="s1">robot</span><span class="s2">, </span><span class="s1">renderer</span><span class="s2">.</span><span class="s1">speechBubbleTimeout</span><span class="s2">);</span>
+		<span class="s2">} </span><span class="s0">else</span>
+			<span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s1">robot</span><span class="s2">.</span><span class="s1">getName</span><span class="s2">() + </span><span class="s3">&quot;: </span><span class="s0">\&quot;</span><span class="s3">&quot; </span><span class="s2">+ </span><span class="s1">str </span><span class="s2">+ </span><span class="s3">&quot;</span><span class="s0">\&quot;</span><span class="s3">&quot;</span><span class="s2">);</span>
+	<span class="s2">}</span>
+
+	<span class="s0">public </span><span class="s1">Position spawnRobotAt</span><span class="s2">(</span><span class="s1">Robot robot</span><span class="s2">, </span><span class="s0">char </span><span class="s1">spawnMarker</span><span class="s2">) {</span>
+		<span class="s1">robots</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">robot</span><span class="s2">);</span>
+		<span class="s0">if </span><span class="s2">(</span><span class="s1">renderer </span><span class="s2">!= </span><span class="s0">null</span><span class="s2">) {</span>
+			<span class="s1">renderer</span><span class="s2">.</span><span class="s1">movingSpeed</span><span class="s2">.</span><span class="s1">put</span><span class="s2">(</span><span class="s1">robot</span><span class="s2">, </span><span class="s5">0</span><span class="s2">);</span>
+			<span class="s1">renderer</span><span class="s2">.</span><span class="s1">movingTime</span><span class="s2">.</span><span class="s1">put</span><span class="s2">(</span><span class="s1">robot</span><span class="s2">, </span><span class="s5">0</span><span class="s2">);</span>
+			<span class="s1">renderer</span><span class="s2">.</span><span class="s1">speechTimer</span><span class="s2">.</span><span class="s1">put</span><span class="s2">(</span><span class="s1">robot</span><span class="s2">, </span><span class="s5">0</span><span class="s2">);</span>
+			<span class="s1">renderer</span><span class="s2">.</span><span class="s1">speechBubble</span><span class="s2">.</span><span class="s1">put</span><span class="s2">(</span><span class="s1">robot</span><span class="s2">, </span><span class="s3">&quot;&quot;</span><span class="s2">);</span>
+		<span class="s2">}</span>
+		<span class="s0">if </span><span class="s2">(</span><span class="s3">'0' </span><span class="s2">&lt;= </span><span class="s1">spawnMarker </span><span class="s2">&amp;&amp; </span><span class="s1">spawnMarker </span><span class="s2">&lt;= </span><span class="s3">'9'</span><span class="s2">) {</span>
+			<span class="s0">if </span><span class="s2">(</span><span class="s0">this</span><span class="s2">.</span><span class="s1">spawnMarker</span><span class="s2">[</span><span class="s1">spawnMarker </span><span class="s2">- </span><span class="s3">'0'</span><span class="s2">] != </span><span class="s0">null</span><span class="s2">)</span>
+				<span class="s0">return this</span><span class="s2">.</span><span class="s1">spawnMarker</span><span class="s2">[</span><span class="s1">spawnMarker </span><span class="s2">- </span><span class="s3">'0'</span><span class="s2">];</span>
+			<span class="s0">else</span>
+				<span class="s0">throw new </span><span class="s1">IllegalArgumentException</span><span class="s2">(</span><span class="s3">&quot;Spawn marker &quot; </span><span class="s2">+ </span><span class="s1">spawnMarker </span><span class="s2">+ </span><span class="s3">&quot; not found on the map!&quot;</span><span class="s2">);</span>
+		<span class="s2">} </span><span class="s0">else</span>
+			<span class="s0">throw new </span><span class="s1">IllegalArgumentException</span><span class="s2">(</span>
+					<span class="s3">&quot;Invalid spawn marker '&quot; </span><span class="s2">+ </span><span class="s1">spawnMarker </span><span class="s2">+ </span><span class="s3">&quot;', it should be a single digit!&quot;</span><span class="s2">);</span>
+	<span class="s2">}</span>
+
+	<span class="s0">public boolean </span><span class="s1">resolveCollision</span><span class="s2">(</span><span class="s1">Robot robot</span><span class="s2">, </span><span class="s1">Position pos</span><span class="s2">) {</span>
+		<span class="s0">if </span><span class="s2">(</span><span class="s1">renderer </span><span class="s2">!= </span><span class="s0">null</span><span class="s2">)</span>
+			<span class="s1">renderer</span><span class="s2">.</span><span class="s1">movingSpeed</span><span class="s2">.</span><span class="s1">put</span><span class="s2">(</span><span class="s1">robot</span><span class="s2">, </span><span class="s1">renderer</span><span class="s2">.</span><span class="s1">movingSpeed</span><span class="s2">.</span><span class="s1">get</span><span class="s2">(</span><span class="s1">robot</span><span class="s2">) + </span><span class="s5">1</span><span class="s2">);</span>
+
+		<span class="s0">double </span><span class="s1">radius </span><span class="s2">= </span><span class="s1">robot</span><span class="s2">.</span><span class="s1">getSize</span><span class="s2">() / </span><span class="s5">2</span><span class="s2">;</span>
+		<span class="s0">boolean </span><span class="s1">xEdge </span><span class="s2">= </span><span class="s1">Math</span><span class="s2">.</span><span class="s1">ceil</span><span class="s2">(</span><span class="s1">pos</span><span class="s2">.</span><span class="s1">x </span><span class="s2">- </span><span class="s1">radius</span><span class="s2">) == </span><span class="s1">Math</span><span class="s2">.</span><span class="s1">floor</span><span class="s2">(</span><span class="s1">pos</span><span class="s2">.</span><span class="s1">x </span><span class="s2">+ </span><span class="s1">radius</span><span class="s2">), </span><span class="s4">// this edge (vertical axis) intersects</span>
+				<span class="s1">yEdge </span><span class="s2">= </span><span class="s1">Math</span><span class="s2">.</span><span class="s1">ceil</span><span class="s2">(</span><span class="s1">pos</span><span class="s2">.</span><span class="s1">y </span><span class="s2">- </span><span class="s1">radius</span><span class="s2">) == </span><span class="s1">Math</span><span class="s2">.</span><span class="s1">floor</span><span class="s2">(</span><span class="s1">pos</span><span class="s2">.</span><span class="s1">y </span><span class="s2">+ </span><span class="s1">radius</span><span class="s2">); </span><span class="s4">// this edge (horizontal axis)</span>
+																					<span class="s4">// intersects</span>
+
+		<span class="s1">Position intersection </span><span class="s2">= </span><span class="s0">new </span><span class="s1">Position</span><span class="s2">(</span><span class="s1">xEdge </span><span class="s2">? </span><span class="s1">Math</span><span class="s2">.</span><span class="s1">ceil</span><span class="s2">(</span><span class="s1">pos</span><span class="s2">.</span><span class="s1">x </span><span class="s2">- </span><span class="s1">radius</span><span class="s2">) : </span><span class="s1">pos</span><span class="s2">.</span><span class="s1">x</span><span class="s2">,</span>
+				<span class="s1">yEdge </span><span class="s2">? </span><span class="s1">Math</span><span class="s2">.</span><span class="s1">ceil</span><span class="s2">(</span><span class="s1">pos</span><span class="s2">.</span><span class="s1">y </span><span class="s2">- </span><span class="s1">radius</span><span class="s2">) : </span><span class="s1">pos</span><span class="s2">.</span><span class="s1">y</span><span class="s2">);</span>
+
+		<span class="s0">boolean </span><span class="s1">horizontallyBlocked </span><span class="s2">= </span><span class="s0">false</span><span class="s2">, </span><span class="s1">verticallyBlocked </span><span class="s2">= </span><span class="s0">false</span><span class="s2">;</span>
+
+		<span class="s4">// &quot;edge&quot; case</span>
+		<span class="s0">if </span><span class="s2">(</span><span class="s1">xEdge </span><span class="s2">^ </span><span class="s1">yEdge</span><span class="s2">) {</span>
+			<span class="s0">boolean </span><span class="s1">blocked </span><span class="s2">= (</span><span class="s1">getTerrain</span><span class="s2">(</span><span class="s1">intersection</span><span class="s2">) == </span><span class="s3">'#'</span><span class="s2">)</span>
+					<span class="s2">^ (</span><span class="s1">getTerrain</span><span class="s2">(</span><span class="s1">intersection</span><span class="s2">.</span><span class="s1">x </span><span class="s2">+ (</span><span class="s1">xEdge </span><span class="s2">? -</span><span class="s5">1 </span><span class="s2">: </span><span class="s5">0</span><span class="s2">), </span><span class="s1">intersection</span><span class="s2">.</span><span class="s1">y </span><span class="s2">+ (</span><span class="s1">yEdge </span><span class="s2">? -</span><span class="s5">1 </span><span class="s2">: </span><span class="s5">0</span><span class="s2">)) == </span><span class="s3">'#'</span><span class="s2">);</span>
+
+			<span class="s1">horizontallyBlocked </span><span class="s2">= </span><span class="s1">blocked </span><span class="s2">&amp;&amp; </span><span class="s1">yEdge</span><span class="s2">;</span>
+			<span class="s1">verticallyBlocked </span><span class="s2">= </span><span class="s1">blocked </span><span class="s2">&amp;&amp; </span><span class="s1">xEdge</span><span class="s2">;</span>
+		<span class="s2">}</span>
+		<span class="s4">// &quot;corner&quot; case</span>
+		<span class="s0">else if </span><span class="s2">(</span><span class="s1">xEdge </span><span class="s2">&amp;&amp; </span><span class="s1">yEdge</span><span class="s2">) {</span>
+			<span class="s4">// NW, NE, SE, SW</span>
+			<span class="s0">double</span><span class="s2">[] </span><span class="s1">dx </span><span class="s2">= { -</span><span class="s5">0.5</span><span class="s2">, +</span><span class="s5">0.5</span><span class="s2">, +</span><span class="s5">0.5</span><span class="s2">, -</span><span class="s5">0.5 </span><span class="s2">};</span>
+			<span class="s0">double</span><span class="s2">[] </span><span class="s1">dy </span><span class="s2">= { -</span><span class="s5">0.5</span><span class="s2">, -</span><span class="s5">0.5</span><span class="s2">, +</span><span class="s5">0.5</span><span class="s2">, +</span><span class="s5">0.5 </span><span class="s2">};</span>
+			<span class="s0">boolean</span><span class="s2">[] </span><span class="s1">blocked </span><span class="s2">= </span><span class="s0">new boolean</span><span class="s2">[</span><span class="s5">4</span><span class="s2">];</span>
+			<span class="s0">int </span><span class="s1">numBlocked </span><span class="s2">= </span><span class="s5">0</span><span class="s2">;</span>
+			<span class="s0">for </span><span class="s2">(</span><span class="s0">int </span><span class="s1">dir </span><span class="s2">= </span><span class="s5">0</span><span class="s2">; </span><span class="s1">dir </span><span class="s2">&lt; </span><span class="s5">4</span><span class="s2">; </span><span class="s1">dir</span><span class="s2">++)</span>
+				<span class="s0">if </span><span class="s2">(</span><span class="s1">blocked</span><span class="s2">[</span><span class="s1">dir</span><span class="s2">] = (</span><span class="s1">getTerrain</span><span class="s2">(</span><span class="s1">intersection</span><span class="s2">.</span><span class="s1">x </span><span class="s2">+ </span><span class="s1">dx</span><span class="s2">[</span><span class="s1">dir</span><span class="s2">], </span><span class="s1">intersection</span><span class="s2">.</span><span class="s1">y </span><span class="s2">+ </span><span class="s1">dy</span><span class="s2">[</span><span class="s1">dir</span><span class="s2">]) == </span><span class="s3">'#'</span><span class="s2">))</span>
+					<span class="s1">numBlocked</span><span class="s2">++;</span>
+
+			<span class="s4">// inner corner or smooth edge between two cells</span>
+			<span class="s0">if </span><span class="s2">(</span><span class="s1">numBlocked </span><span class="s2">&gt;= </span><span class="s5">2</span><span class="s2">) {</span>
+				<span class="s1">horizontallyBlocked </span><span class="s2">= </span><span class="s1">blocked</span><span class="s2">[</span><span class="s5">0</span><span class="s2">] == </span><span class="s1">blocked</span><span class="s2">[</span><span class="s5">1</span><span class="s2">];</span>
+				<span class="s1">verticallyBlocked </span><span class="s2">= </span><span class="s1">blocked</span><span class="s2">[</span><span class="s5">0</span><span class="s2">] == </span><span class="s1">blocked</span><span class="s2">[</span><span class="s5">3</span><span class="s2">];</span>
+				<span class="s0">for </span><span class="s2">(</span><span class="s0">int </span><span class="s1">i </span><span class="s2">= </span><span class="s5">0</span><span class="s2">; </span><span class="s1">i </span><span class="s2">&lt; </span><span class="s5">4</span><span class="s2">; </span><span class="s1">i</span><span class="s2">++)</span>
+					<span class="s0">if </span><span class="s2">(</span><span class="s1">blocked</span><span class="s2">[</span><span class="s1">i</span><span class="s2">] &amp;&amp; </span><span class="s1">blocked</span><span class="s2">[(</span><span class="s1">i </span><span class="s2">+ </span><span class="s5">2</span><span class="s2">) % </span><span class="s5">4</span><span class="s2">]) {</span>
+						<span class="s1">horizontallyBlocked </span><span class="s2">= </span><span class="s1">verticallyBlocked </span><span class="s2">= </span><span class="s0">true</span><span class="s2">;</span>
+						<span class="s0">break</span><span class="s2">;</span>
+					<span class="s2">}</span>
+			<span class="s2">}</span>
+			<span class="s4">// outer corner</span>
+			<span class="s0">else if </span><span class="s2">(</span><span class="s1">numBlocked </span><span class="s2">== </span><span class="s5">1</span><span class="s2">) {</span>
+				<span class="s1">intersection</span><span class="s2">.</span><span class="s1">x </span><span class="s2">= </span><span class="s1">blocked</span><span class="s2">[</span><span class="s5">0</span><span class="s2">] || </span><span class="s1">blocked</span><span class="s2">[</span><span class="s5">3</span><span class="s2">] ? </span><span class="s1">Math</span><span class="s2">.</span><span class="s1">min</span><span class="s2">(</span><span class="s1">pos</span><span class="s2">.</span><span class="s1">x</span><span class="s2">, </span><span class="s1">intersection</span><span class="s2">.</span><span class="s1">x</span><span class="s2">)</span>
+						<span class="s2">: </span><span class="s1">Math</span><span class="s2">.</span><span class="s1">max</span><span class="s2">(</span><span class="s1">pos</span><span class="s2">.</span><span class="s1">x</span><span class="s2">, </span><span class="s1">intersection</span><span class="s2">.</span><span class="s1">x</span><span class="s2">);</span>
+				<span class="s1">intersection</span><span class="s2">.</span><span class="s1">y </span><span class="s2">= </span><span class="s1">blocked</span><span class="s2">[</span><span class="s5">0</span><span class="s2">] || </span><span class="s1">blocked</span><span class="s2">[</span><span class="s5">1</span><span class="s2">] ? </span><span class="s1">Math</span><span class="s2">.</span><span class="s1">min</span><span class="s2">(</span><span class="s1">pos</span><span class="s2">.</span><span class="s1">y</span><span class="s2">, </span><span class="s1">intersection</span><span class="s2">.</span><span class="s1">y</span><span class="s2">)</span>
+						<span class="s2">: </span><span class="s1">Math</span><span class="s2">.</span><span class="s1">max</span><span class="s2">(</span><span class="s1">pos</span><span class="s2">.</span><span class="s1">y</span><span class="s2">, </span><span class="s1">intersection</span><span class="s2">.</span><span class="s1">y</span><span class="s2">);</span>
+				<span class="s0">boolean </span><span class="s1">isColliding </span><span class="s2">= </span><span class="s1">pos</span><span class="s2">.</span><span class="s1">distanceTo</span><span class="s2">(</span><span class="s1">intersection</span><span class="s2">) &lt;= </span><span class="s1">radius</span><span class="s2">;</span>
+				<span class="s0">if </span><span class="s2">(</span><span class="s1">isColliding</span><span class="s2">)</span>
+					<span class="s1">pos</span><span class="s2">.</span><span class="s1">moveBy</span><span class="s2">(</span><span class="s1">radius </span><span class="s2">- </span><span class="s1">intersection</span><span class="s2">.</span><span class="s1">distanceTo</span><span class="s2">(</span><span class="s1">pos</span><span class="s2">), </span><span class="s1">intersection</span><span class="s2">.</span><span class="s1">directionTo</span><span class="s2">(</span><span class="s1">pos</span><span class="s2">));</span>
+				<span class="s0">return </span><span class="s1">isColliding</span><span class="s2">;</span>
+			<span class="s2">}</span>
+		<span class="s2">}</span>
+
+		<span class="s0">if </span><span class="s2">(</span><span class="s1">horizontallyBlocked</span><span class="s2">)</span>
+			<span class="s1">pos</span><span class="s2">.</span><span class="s1">y </span><span class="s2">= </span><span class="s1">intersection</span><span class="s2">.</span><span class="s1">y </span><span class="s2">- (</span><span class="s1">pos</span><span class="s2">.</span><span class="s1">y </span><span class="s2">&lt; </span><span class="s1">intersection</span><span class="s2">.</span><span class="s1">y </span><span class="s2">? </span><span class="s1">radius </span><span class="s2">: -</span><span class="s1">radius</span><span class="s2">);</span>
+		<span class="s0">if </span><span class="s2">(</span><span class="s1">verticallyBlocked</span><span class="s2">)</span>
+			<span class="s1">pos</span><span class="s2">.</span><span class="s1">x </span><span class="s2">= </span><span class="s1">intersection</span><span class="s2">.</span><span class="s1">x </span><span class="s2">- (</span><span class="s1">pos</span><span class="s2">.</span><span class="s1">x </span><span class="s2">&lt; </span><span class="s1">intersection</span><span class="s2">.</span><span class="s1">x </span><span class="s2">? </span><span class="s1">radius </span><span class="s2">: -</span><span class="s1">radius</span><span class="s2">);</span>
+		<span class="s0">return </span><span class="s1">horizontallyBlocked </span><span class="s2">|| </span><span class="s1">verticallyBlocked</span><span class="s2">;</span>
+	<span class="s2">}</span>
+
+	<span class="s0">public void </span><span class="s1">run</span><span class="s2">() {</span>
+		<span class="s0">if </span><span class="s2">(</span><span class="s1">renderer </span><span class="s2">!= </span><span class="s0">null</span><span class="s2">)</span>
+			<span class="s1">renderer</span><span class="s2">.</span><span class="s1">setup</span><span class="s2">();</span>
+
+		<span class="s0">try </span><span class="s2">{</span>
+			<span class="s0">while </span><span class="s2">(</span><span class="s0">true</span><span class="s2">) {</span>
+				<span class="s0">if </span><span class="s2">(</span><span class="s1">renderer </span><span class="s2">!= </span><span class="s0">null</span><span class="s2">) {</span>
+					<span class="s4">// wait until unpaused</span>
+					<span class="s0">while </span><span class="s2">(</span><span class="s1">pause </span><span class="s2">|| </span><span class="s1">currentFrame </span><span class="s2">== </span><span class="s1">pauseAtFrame</span><span class="s2">)</span>
+						<span class="s1">Thread</span><span class="s2">.</span><span class="s1">sleep</span><span class="s2">(</span><span class="s5">50</span><span class="s2">);</span>
+
+					<span class="s0">long </span><span class="s1">before </span><span class="s2">= </span><span class="s1">System</span><span class="s2">.</span><span class="s1">currentTimeMillis</span><span class="s2">();</span>
+
+					<span class="s1">simulateFrame</span><span class="s2">();</span>
+					<span class="s1">renderer</span><span class="s2">.</span><span class="s1">render</span><span class="s2">();</span>
+
+					<span class="s0">long </span><span class="s1">frametime </span><span class="s2">= </span><span class="s1">System</span><span class="s2">.</span><span class="s1">currentTimeMillis</span><span class="s2">() - </span><span class="s1">before</span><span class="s2">;</span>
+					<span class="s0">long </span><span class="s1">sleepTime </span><span class="s2">= </span><span class="s1">targetFrametime </span><span class="s2">- </span><span class="s1">frametime</span><span class="s2">;</span>
+					<span class="s0">if </span><span class="s2">(</span><span class="s1">sleepTime </span><span class="s2">&gt; </span><span class="s5">0</span><span class="s2">)</span>
+						<span class="s1">Thread</span><span class="s2">.</span><span class="s1">sleep</span><span class="s2">(</span><span class="s1">sleepTime</span><span class="s2">);</span>
+				<span class="s2">} </span><span class="s0">else</span>
+					<span class="s1">simulateFrame</span><span class="s2">();</span>
+			<span class="s2">}</span>
+		<span class="s2">} </span><span class="s0">catch </span><span class="s2">(</span><span class="s1">InterruptedException e</span><span class="s2">) {</span>
+			<span class="s4">/* Intentionally left blank */</span>
+		<span class="s2">}</span>
+	<span class="s2">}</span>
+
+	<span class="s0">public void </span><span class="s1">simulateFrame</span><span class="s2">() {</span>
+		<span class="s1">currentFrame</span><span class="s2">++;</span>
+
+		<span class="s0">for </span><span class="s2">(</span><span class="s1">Robot robot </span><span class="s2">: </span><span class="s1">robots</span><span class="s2">) {</span>
+			<span class="s0">try </span><span class="s2">{</span>
+				<span class="s0">if </span><span class="s2">(</span><span class="s1">work </span><span class="s2">!= </span><span class="s0">null</span><span class="s2">)</span>
+					<span class="s1">work</span><span class="s2">.</span><span class="s1">invoke</span><span class="s2">(</span><span class="s1">robot</span><span class="s2">);</span>
+			<span class="s2">} </span><span class="s0">catch </span><span class="s2">(</span><span class="s1">IllegalAccessException e</span><span class="s2">) {</span>
+				<span class="s4">/* 
+                 * intentionally left blank: student has not implemented Robot.work() method yet 
+                 */</span>
+			<span class="s2">} </span><span class="s0">catch </span><span class="s2">(</span><span class="s1">InvocationTargetException e</span><span class="s2">) {</span>
+				<span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s3">&quot;Exception thrown by Robot &quot; </span><span class="s2">+ </span><span class="s1">robot </span><span class="s2">+ </span><span class="s3">&quot; while working: &quot; </span><span class="s2">+ </span><span class="s1">e</span><span class="s2">.</span><span class="s1">getCause</span><span class="s2">());</span>
+				<span class="s0">throw </span><span class="s2">(</span><span class="s1">RuntimeException</span><span class="s2">) </span><span class="s1">e</span><span class="s2">.</span><span class="s1">getCause</span><span class="s2">();</span>
+			<span class="s2">}</span>
+		<span class="s2">}</span>
+	<span class="s2">}</span>
+
+	<span class="s0">private class </span><span class="s1">Renderer </span><span class="s2">{</span>
+		<span class="s0">private </span><span class="s1">JFrame frame</span><span class="s2">;</span>
+		<span class="s0">private </span><span class="s1">Map</span><span class="s2">&lt;</span><span class="s1">Robot</span><span class="s2">, </span><span class="s1">JLabel</span><span class="s2">&gt; </span><span class="s1">memoryLabels</span><span class="s2">;</span>
+		<span class="s0">private </span><span class="s1">JPanel memoryPanel</span><span class="s2">;</span>
+		<span class="s0">private </span><span class="s1">BufferedImage</span><span class="s2">[] </span><span class="s1">pengu</span><span class="s2">, </span><span class="s1">ice</span><span class="s2">; </span><span class="s4">// &quot;3D&quot; sprite stacking</span>
+		<span class="s0">private </span><span class="s1">BufferedImage</span><span class="s2">[] </span><span class="s1">ground </span><span class="s2">= </span><span class="s0">new </span><span class="s1">BufferedImage</span><span class="s2">[</span><span class="s1">LAST_TERRAIN </span><span class="s2">- </span><span class="s1">FIRST_TERRAIN </span><span class="s2">+ </span><span class="s5">1</span><span class="s2">]; </span><span class="s4">// ground with potential</span>
+																								<span class="s4">// text</span>
+		<span class="s1">Map</span><span class="s2">&lt;</span><span class="s1">Robot</span><span class="s2">, </span><span class="s1">Integer</span><span class="s2">&gt; </span><span class="s1">movingTime </span><span class="s2">= </span><span class="s0">new </span><span class="s1">HashMap</span><span class="s2">&lt;&gt;();</span>
+		<span class="s1">Map</span><span class="s2">&lt;</span><span class="s1">Robot</span><span class="s2">, </span><span class="s1">Integer</span><span class="s2">&gt; </span><span class="s1">movingSpeed </span><span class="s2">= </span><span class="s0">new </span><span class="s1">HashMap</span><span class="s2">&lt;&gt;();</span>
+		<span class="s1">Map</span><span class="s2">&lt;</span><span class="s1">Robot</span><span class="s2">, </span><span class="s1">String</span><span class="s2">&gt; </span><span class="s1">speechBubble </span><span class="s2">= </span><span class="s0">new </span><span class="s1">HashMap</span><span class="s2">&lt;&gt;();</span>
+		<span class="s1">Map</span><span class="s2">&lt;</span><span class="s1">Robot</span><span class="s2">, </span><span class="s1">Integer</span><span class="s2">&gt; </span><span class="s1">speechTimer </span><span class="s2">= </span><span class="s0">new </span><span class="s1">HashMap</span><span class="s2">&lt;&gt;();</span>
+		<span class="s0">int </span><span class="s1">speechBubbleTimeout </span><span class="s2">= </span><span class="s5">60</span><span class="s2">;</span>
+		<span class="s0">double </span><span class="s1">cameraX </span><span class="s2">= </span><span class="s5">0</span><span class="s2">, </span><span class="s1">cameraY </span><span class="s2">= </span><span class="s5">0</span><span class="s2">;</span>
+		<span class="s0">double </span><span class="s1">scale </span><span class="s2">= </span><span class="s5">50</span><span class="s2">, </span><span class="s1">minScale </span><span class="s2">= </span><span class="s5">1</span><span class="s2">, </span><span class="s1">maxScale </span><span class="s2">= </span><span class="s5">1000</span><span class="s2">;</span>
+		<span class="s0">final int </span><span class="s1">zResolution </span><span class="s2">= </span><span class="s5">8</span><span class="s2">;</span>
+		<span class="s0">double </span><span class="s1">zHeight </span><span class="s2">= </span><span class="s5">0.4</span><span class="s2">;</span>
+
+		<span class="s0">void </span><span class="s1">setup</span><span class="s2">() {</span>
+			<span class="s4">// load images</span>
+			<span class="s1">BufferedImage snow </span><span class="s2">= </span><span class="s1">loadImage</span><span class="s2">(</span><span class="s3">&quot;snow&quot;</span><span class="s2">);</span>
+			<span class="s0">for </span><span class="s2">(</span><span class="s0">char </span><span class="s1">c </span><span class="s2">= </span><span class="s1">FIRST_TERRAIN</span><span class="s2">; </span><span class="s1">c </span><span class="s2">&lt;= </span><span class="s1">LAST_TERRAIN</span><span class="s2">; </span><span class="s1">c</span><span class="s2">++)</span>
+				<span class="s1">ground</span><span class="s2">[</span><span class="s1">c </span><span class="s2">- </span><span class="s1">FIRST_TERRAIN</span><span class="s2">] = </span><span class="s1">overlayChar</span><span class="s2">(</span><span class="s1">snow</span><span class="s2">, </span><span class="s1">c</span><span class="s2">);</span>
+			<span class="s1">pengu </span><span class="s2">= </span><span class="s1">load3DImage</span><span class="s2">(</span><span class="s3">&quot;peng&quot;</span><span class="s2">);</span>
+			<span class="s1">ice </span><span class="s2">= </span><span class="s1">load3DImage</span><span class="s2">(</span><span class="s3">&quot;ice&quot;</span><span class="s2">);</span>
+
+			<span class="s4">// init frame and layout</span>
+			<span class="s1">frame </span><span class="s2">= </span><span class="s0">new </span><span class="s1">JFrame</span><span class="s2">(</span><span class="s3">&quot;Penguin Robot&quot;</span><span class="s2">);</span>
+			<span class="s1">frame</span><span class="s2">.</span><span class="s1">setDefaultCloseOperation</span><span class="s2">(</span><span class="s1">JFrame</span><span class="s2">.</span><span class="s1">EXIT_ON_CLOSE</span><span class="s2">);</span>
+			<span class="s1">frame</span><span class="s2">.</span><span class="s1">getContentPane</span><span class="s2">().</span><span class="s1">setLayout</span><span class="s2">(</span><span class="s0">new </span><span class="s1">BorderLayout</span><span class="s2">());</span>
+
+			<span class="s4">// center canvas</span>
+			<span class="s1">JPanel canvas </span><span class="s2">= </span><span class="s0">new </span><span class="s1">Canvas</span><span class="s2">();</span>
+			<span class="s1">canvas</span><span class="s2">.</span><span class="s1">setFont</span><span class="s2">(</span><span class="s1">canvas</span><span class="s2">.</span><span class="s1">getFont</span><span class="s2">().</span><span class="s1">deriveFont</span><span class="s2">(</span><span class="s5">16.0f</span><span class="s2">));</span>
+			<span class="s1">frame</span><span class="s2">.</span><span class="s1">getContentPane</span><span class="s2">().</span><span class="s1">add</span><span class="s2">(</span><span class="s1">canvas</span><span class="s2">, </span><span class="s1">BorderLayout</span><span class="s2">.</span><span class="s1">CENTER</span><span class="s2">);</span>
+
+			<span class="s4">// top control panel</span>
+			<span class="s1">JPanel controlPanel </span><span class="s2">= </span><span class="s0">new </span><span class="s1">JPanel</span><span class="s2">();</span>
+			<span class="s1">controlPanel</span><span class="s2">.</span><span class="s1">setLayout</span><span class="s2">(</span><span class="s0">new </span><span class="s1">BoxLayout</span><span class="s2">(</span><span class="s1">controlPanel</span><span class="s2">, </span><span class="s1">BoxLayout</span><span class="s2">.</span><span class="s1">X_AXIS</span><span class="s2">));</span>
+
+			<span class="s4">// toggle pause</span>
+			<span class="s1">JButton pauseButt </span><span class="s2">= </span><span class="s0">new </span><span class="s1">JButton</span><span class="s2">(</span><span class="s3">&quot;Start/Pause&quot;</span><span class="s2">);</span>
+			<span class="s1">pauseButt</span><span class="s2">.</span><span class="s1">addActionListener</span><span class="s2">(</span><span class="s1">e -&gt; </span><span class="s2">{</span>
+				<span class="s1">pause </span><span class="s2">= </span><span class="s1">currentFrame </span><span class="s2">!= </span><span class="s1">pauseAtFrame </span><span class="s2">&amp;&amp; !</span><span class="s1">pause</span><span class="s2">;</span>
+				<span class="s1">pauseAtFrame </span><span class="s2">= -</span><span class="s5">1</span><span class="s2">;</span>
+			<span class="s2">});</span>
+			<span class="s1">pauseButt</span><span class="s2">.</span><span class="s1">setFocusable</span><span class="s2">(</span><span class="s0">false</span><span class="s2">);</span>
+			<span class="s1">pauseButt</span><span class="s2">.</span><span class="s1">setToolTipText</span><span class="s2">(</span><span class="s3">&quot;or press Spacebar&quot;</span><span class="s2">);</span>
+			<span class="s1">controlPanel</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">pauseButt</span><span class="s2">);</span>
+
+			<span class="s4">// one frame</span>
+			<span class="s1">JButton nextFrame </span><span class="s2">= </span><span class="s0">new </span><span class="s1">JButton</span><span class="s2">(</span><span class="s3">&quot;Next Frame&quot;</span><span class="s2">);</span>
+			<span class="s1">nextFrame</span><span class="s2">.</span><span class="s1">addActionListener</span><span class="s2">(</span><span class="s1">e -&gt; </span><span class="s2">{</span>
+				<span class="s1">pauseAtFrame </span><span class="s2">= </span><span class="s1">currentFrame </span><span class="s2">+ </span><span class="s5">1</span><span class="s2">;</span>
+				<span class="s1">pause </span><span class="s2">= </span><span class="s0">false</span><span class="s2">;</span>
+			<span class="s2">});</span>
+			<span class="s1">nextFrame</span><span class="s2">.</span><span class="s1">setFocusable</span><span class="s2">(</span><span class="s0">false</span><span class="s2">);</span>
+			<span class="s1">nextFrame</span><span class="s2">.</span><span class="s1">setToolTipText</span><span class="s2">(</span><span class="s3">&quot;or press Enter&quot;</span><span class="s2">);</span>
+			<span class="s1">controlPanel</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">nextFrame</span><span class="s2">);</span>
+
+			<span class="s4">// speed controls</span>
+			<span class="s1">controlPanel</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s0">new </span><span class="s1">JLabel</span><span class="s2">(</span><span class="s3">&quot;  Speed:&quot;</span><span class="s2">));</span>
+			<span class="s1">ButtonGroup group </span><span class="s2">= </span><span class="s0">new </span><span class="s1">ButtonGroup</span><span class="s2">();</span>
+			<span class="s1">JRadioButton</span><span class="s2">[] </span><span class="s1">r </span><span class="s2">= { </span><span class="s0">new </span><span class="s1">JRadioButton</span><span class="s2">(</span><span class="s3">&quot;x0.25&quot;</span><span class="s2">), </span><span class="s0">new </span><span class="s1">JRadioButton</span><span class="s2">(</span><span class="s3">&quot;x0.5&quot;</span><span class="s2">), </span><span class="s0">new </span><span class="s1">JRadioButton</span><span class="s2">(</span><span class="s3">&quot;x1&quot;</span><span class="s2">),</span>
+					<span class="s0">new </span><span class="s1">JRadioButton</span><span class="s2">(</span><span class="s3">&quot;x2&quot;</span><span class="s2">), </span><span class="s0">new </span><span class="s1">JRadioButton</span><span class="s2">(</span><span class="s3">&quot;x4&quot;</span><span class="s2">) };</span>
+			<span class="s0">for </span><span class="s2">(</span><span class="s0">int </span><span class="s1">i </span><span class="s2">= </span><span class="s5">0</span><span class="s2">, </span><span class="s1">t </span><span class="s2">= </span><span class="s5">64</span><span class="s2">; </span><span class="s1">i </span><span class="s2">&lt; </span><span class="s1">r</span><span class="s2">.</span><span class="s1">length</span><span class="s2">; </span><span class="s1">i</span><span class="s2">++, </span><span class="s1">t </span><span class="s2">/= </span><span class="s5">2</span><span class="s2">) {</span>
+				<span class="s0">final int </span><span class="s1">tF </span><span class="s2">= </span><span class="s1">t</span><span class="s2">; </span><span class="s4">// this is stupid</span>
+				<span class="s1">r</span><span class="s2">[</span><span class="s1">i</span><span class="s2">].</span><span class="s1">addActionListener</span><span class="s2">(</span><span class="s1">e -&gt; targetFrametime </span><span class="s2">= </span><span class="s1">tF</span><span class="s2">);</span>
+				<span class="s1">r</span><span class="s2">[</span><span class="s1">i</span><span class="s2">].</span><span class="s1">setFocusable</span><span class="s2">(</span><span class="s0">false</span><span class="s2">);</span>
+				<span class="s1">group</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">r</span><span class="s2">[</span><span class="s1">i</span><span class="s2">]);</span>
+				<span class="s1">controlPanel</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">r</span><span class="s2">[</span><span class="s1">i</span><span class="s2">]);</span>
+			<span class="s2">}</span>
+			<span class="s1">r</span><span class="s2">[</span><span class="s5">2</span><span class="s2">].</span><span class="s1">setSelected</span><span class="s2">(</span><span class="s0">true</span><span class="s2">);</span>
+
+			<span class="s4">// 3D toggle</span>
+			<span class="s1">JToggleButton toggle3D </span><span class="s2">= </span><span class="s0">new </span><span class="s1">JToggleButton</span><span class="s2">(</span><span class="s3">&quot;3D Mode&quot;</span><span class="s2">);</span>
+			<span class="s1">toggle3D</span><span class="s2">.</span><span class="s1">addActionListener</span><span class="s2">(</span><span class="s1">e -&gt; </span><span class="s2">{</span>
+				<span class="s0">if </span><span class="s2">(</span><span class="s1">zHeight </span><span class="s2">== </span><span class="s5">0</span><span class="s2">)</span>
+					<span class="s1">zHeight </span><span class="s2">= </span><span class="s5">0.4</span><span class="s2">;</span>
+				<span class="s0">else</span>
+					<span class="s1">zHeight </span><span class="s2">= </span><span class="s5">0</span><span class="s2">;</span>
+				<span class="s4">// render</span>
+				<span class="s1">frame</span><span class="s2">.</span><span class="s1">revalidate</span><span class="s2">();</span>
+				<span class="s1">frame</span><span class="s2">.</span><span class="s1">repaint</span><span class="s2">();</span>
+			<span class="s2">});</span>
+			<span class="s1">toggle3D</span><span class="s2">.</span><span class="s1">setSelected</span><span class="s2">(</span><span class="s0">true</span><span class="s2">);</span>
+			<span class="s1">toggle3D</span><span class="s2">.</span><span class="s1">setFocusable</span><span class="s2">(</span><span class="s0">false</span><span class="s2">);</span>
+			<span class="s1">controlPanel</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">toggle3D</span><span class="s2">);</span>
+
+			<span class="s1">frame</span><span class="s2">.</span><span class="s1">getContentPane</span><span class="s2">().</span><span class="s1">add</span><span class="s2">(</span><span class="s1">controlPanel</span><span class="s2">, </span><span class="s1">BorderLayout</span><span class="s2">.</span><span class="s1">NORTH</span><span class="s2">);</span>
+
+			<span class="s4">// bottom memory panel</span>
+			<span class="s1">memoryPanel </span><span class="s2">= </span><span class="s0">new </span><span class="s1">JPanel</span><span class="s2">();</span>
+			<span class="s1">memoryPanel</span><span class="s2">.</span><span class="s1">setBackground</span><span class="s2">(</span><span class="s1">Color</span><span class="s2">.</span><span class="s1">LIGHT_GRAY</span><span class="s2">);</span>
+			<span class="s1">memoryPanel</span><span class="s2">.</span><span class="s1">setLayout</span><span class="s2">(</span><span class="s0">new </span><span class="s1">BoxLayout</span><span class="s2">(</span><span class="s1">memoryPanel</span><span class="s2">, </span><span class="s1">BoxLayout</span><span class="s2">.</span><span class="s1">Y_AXIS</span><span class="s2">));</span>
+			<span class="s1">memoryLabels </span><span class="s2">= </span><span class="s0">new </span><span class="s1">HashMap</span><span class="s2">&lt;&gt;();</span>
+			<span class="s1">updateMemoryPanel</span><span class="s2">();</span>
+			<span class="s1">frame</span><span class="s2">.</span><span class="s1">getContentPane</span><span class="s2">().</span><span class="s1">add</span><span class="s2">(</span><span class="s1">memoryPanel</span><span class="s2">, </span><span class="s1">BorderLayout</span><span class="s2">.</span><span class="s1">SOUTH</span><span class="s2">);</span>
+
+			<span class="s4">// event handlers</span>
+			<span class="s0">if </span><span class="s2">(</span><span class="s1">controller </span><span class="s0">instanceof </span><span class="s1">PhysicalController physicalController</span><span class="s2">) {</span>
+				<span class="s1">frame</span><span class="s2">.</span><span class="s1">addKeyListener</span><span class="s2">(</span><span class="s1">physicalController</span><span class="s2">);</span>
+				<span class="s1">frame</span><span class="s2">.</span><span class="s1">addMouseListener</span><span class="s2">(</span><span class="s1">physicalController</span><span class="s2">);</span>
+				<span class="s1">canvas</span><span class="s2">.</span><span class="s1">addMouseMotionListener</span><span class="s2">(</span><span class="s1">physicalController</span><span class="s2">);</span>
+				<span class="s1">frame</span><span class="s2">.</span><span class="s1">addMouseWheelListener</span><span class="s2">(</span><span class="s1">physicalController</span><span class="s2">);</span>
+			<span class="s2">}</span>
+
+			<span class="s4">// frame initial state</span>
+			<span class="s1">frame</span><span class="s2">.</span><span class="s1">setExtendedState</span><span class="s2">(</span><span class="s1">JFrame</span><span class="s2">.</span><span class="s1">MAXIMIZED_BOTH</span><span class="s2">);</span>
+			<span class="s1">frame</span><span class="s2">.</span><span class="s1">setPreferredSize</span><span class="s2">(</span><span class="s0">new </span><span class="s1">Dimension</span><span class="s2">(</span><span class="s5">1600</span><span class="s2">, </span><span class="s5">900</span><span class="s2">));</span>
+			<span class="s1">frame</span><span class="s2">.</span><span class="s1">setMinimumSize</span><span class="s2">(</span><span class="s0">new </span><span class="s1">Dimension</span><span class="s2">(</span><span class="s5">800</span><span class="s2">, </span><span class="s5">450</span><span class="s2">));</span>
+			<span class="s1">frame</span><span class="s2">.</span><span class="s1">setLocationRelativeTo</span><span class="s2">(</span><span class="s0">null</span><span class="s2">);</span>
+			<span class="s1">frame</span><span class="s2">.</span><span class="s1">setVisible</span><span class="s2">(</span><span class="s0">true</span><span class="s2">);</span>
+		<span class="s2">}</span>
+
+		<span class="s0">void </span><span class="s1">render</span><span class="s2">() {</span>
+			<span class="s4">// increase moving time</span>
+			<span class="s0">for </span><span class="s2">(</span><span class="s1">Map</span><span class="s2">.</span><span class="s1">Entry</span><span class="s2">&lt;</span><span class="s1">Robot</span><span class="s2">, </span><span class="s1">Integer</span><span class="s2">&gt; </span><span class="s1">entry </span><span class="s2">: </span><span class="s1">movingTime</span><span class="s2">.</span><span class="s1">entrySet</span><span class="s2">())</span>
+				<span class="s1">entry</span><span class="s2">.</span><span class="s1">setValue</span><span class="s2">(</span><span class="s1">entry</span><span class="s2">.</span><span class="s1">getValue</span><span class="s2">() + </span><span class="s5">1</span><span class="s2">);</span>
+
+			<span class="s4">// reset non-moving penguins</span>
+			<span class="s0">for </span><span class="s2">(</span><span class="s1">Map</span><span class="s2">.</span><span class="s1">Entry</span><span class="s2">&lt;</span><span class="s1">Robot</span><span class="s2">, </span><span class="s1">Integer</span><span class="s2">&gt; </span><span class="s1">entry </span><span class="s2">: </span><span class="s1">movingSpeed</span><span class="s2">.</span><span class="s1">entrySet</span><span class="s2">())</span>
+				<span class="s0">if </span><span class="s2">(</span><span class="s1">entry</span><span class="s2">.</span><span class="s1">getValue</span><span class="s2">() == </span><span class="s5">0</span><span class="s2">)</span>
+					<span class="s1">movingTime</span><span class="s2">.</span><span class="s1">put</span><span class="s2">(</span><span class="s1">entry</span><span class="s2">.</span><span class="s1">getKey</span><span class="s2">(), </span><span class="s5">0</span><span class="s2">);</span>
+
+			<span class="s1">updateMemoryPanel</span><span class="s2">();</span>
+
+			<span class="s4">// render</span>
+			<span class="s1">frame</span><span class="s2">.</span><span class="s1">revalidate</span><span class="s2">();</span>
+			<span class="s1">frame</span><span class="s2">.</span><span class="s1">repaint</span><span class="s2">();</span>
+
+			<span class="s4">// decrease timer for speech bubble</span>
+			<span class="s0">for </span><span class="s2">(</span><span class="s1">Map</span><span class="s2">.</span><span class="s1">Entry</span><span class="s2">&lt;</span><span class="s1">Robot</span><span class="s2">, </span><span class="s1">Integer</span><span class="s2">&gt; </span><span class="s1">entry </span><span class="s2">: </span><span class="s1">speechTimer</span><span class="s2">.</span><span class="s1">entrySet</span><span class="s2">())</span>
+				<span class="s1">entry</span><span class="s2">.</span><span class="s1">setValue</span><span class="s2">(</span><span class="s1">Math</span><span class="s2">.</span><span class="s1">max</span><span class="s2">(</span><span class="s5">0</span><span class="s2">, </span><span class="s1">entry</span><span class="s2">.</span><span class="s1">getValue</span><span class="s2">() - </span><span class="s5">1</span><span class="s2">));</span>
+
+			<span class="s4">// reset moved</span>
+			<span class="s0">for </span><span class="s2">(</span><span class="s1">Map</span><span class="s2">.</span><span class="s1">Entry</span><span class="s2">&lt;</span><span class="s1">Robot</span><span class="s2">, </span><span class="s1">Integer</span><span class="s2">&gt; </span><span class="s1">entry </span><span class="s2">: </span><span class="s1">movingSpeed</span><span class="s2">.</span><span class="s1">entrySet</span><span class="s2">())</span>
+				<span class="s1">entry</span><span class="s2">.</span><span class="s1">setValue</span><span class="s2">(</span><span class="s5">0</span><span class="s2">);</span>
+		<span class="s2">}</span>
+
+		<span class="s0">private void </span><span class="s1">updateMemoryPanel</span><span class="s2">() {</span>
+			<span class="s0">for </span><span class="s2">(</span><span class="s1">Robot robot </span><span class="s2">: </span><span class="s1">robots</span><span class="s2">) {</span>
+				<span class="s0">if </span><span class="s2">(!</span><span class="s1">memoryLabels</span><span class="s2">.</span><span class="s1">containsKey</span><span class="s2">(</span><span class="s1">robot</span><span class="s2">)) {</span>
+					<span class="s1">JLabel memoryLabel </span><span class="s2">= </span><span class="s0">new </span><span class="s1">JLabel</span><span class="s2">();</span>
+					<span class="s1">memoryPanel</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">memoryLabel</span><span class="s2">);</span>
+					<span class="s1">memoryLabels</span><span class="s2">.</span><span class="s1">put</span><span class="s2">(</span><span class="s1">robot</span><span class="s2">, </span><span class="s1">memoryLabel</span><span class="s2">);</span>
+				<span class="s2">}</span>
+
+				<span class="s1">String memStr </span><span class="s2">= </span><span class="s3">&quot;&quot;</span><span class="s2">;</span>
+				<span class="s0">try </span><span class="s2">{</span>
+					<span class="s0">if </span><span class="s2">(</span><span class="s1">memoryToString </span><span class="s2">!= </span><span class="s0">null</span><span class="s2">)</span>
+						<span class="s1">memStr </span><span class="s2">= (</span><span class="s1">String</span><span class="s2">) </span><span class="s1">memoryToString</span><span class="s2">.</span><span class="s1">invoke</span><span class="s2">(</span><span class="s1">robot</span><span class="s2">);</span>
+				<span class="s2">} </span><span class="s0">catch </span><span class="s2">(</span><span class="s1">IllegalAccessException e</span><span class="s2">) {</span>
+					<span class="s4">/* */</span>
+				<span class="s2">} </span><span class="s0">catch </span><span class="s2">(</span><span class="s1">InvocationTargetException e</span><span class="s2">) {</span>
+					<span class="s0">throw </span><span class="s2">(</span><span class="s1">RuntimeException</span><span class="s2">) </span><span class="s1">e</span><span class="s2">.</span><span class="s1">getCause</span><span class="s2">();</span>
+				<span class="s2">}</span>
+				<span class="s1">memoryLabels</span><span class="s2">.</span><span class="s1">get</span><span class="s2">(</span><span class="s1">robot</span><span class="s2">).</span><span class="s1">setText</span><span class="s2">(</span><span class="s3">&quot;  &quot; </span><span class="s2">+ </span><span class="s1">robot</span><span class="s2">.</span><span class="s1">toString</span><span class="s2">() + </span><span class="s3">&quot;: &quot; </span><span class="s2">+ </span><span class="s1">memStr</span><span class="s2">);</span>
+			<span class="s2">}</span>
+		<span class="s2">}</span>
+
+		<span class="s1">@SuppressWarnings</span><span class="s2">(</span><span class="s3">&quot;serial&quot;</span><span class="s2">)</span>
+		<span class="s0">private class </span><span class="s1">Canvas </span><span class="s0">extends </span><span class="s1">JPanel </span><span class="s2">{</span>
+			<span class="s1">@Override</span>
+			<span class="s0">protected void </span><span class="s1">paintComponent</span><span class="s2">(</span><span class="s1">Graphics g</span><span class="s2">) {</span>
+				<span class="s0">super</span><span class="s2">.</span><span class="s1">paintComponent</span><span class="s2">(</span><span class="s1">g</span><span class="s2">);</span>
+
+				<span class="s4">// update camera pos</span>
+				<span class="s1">cameraX </span><span class="s2">= </span><span class="s1">getWidth</span><span class="s2">() / </span><span class="s5">2 </span><span class="s2">- </span><span class="s1">width </span><span class="s2">* </span><span class="s1">scale </span><span class="s2">/ </span><span class="s5">2</span><span class="s2">;</span>
+				<span class="s1">cameraY </span><span class="s2">= </span><span class="s1">getHeight</span><span class="s2">() / </span><span class="s5">2 </span><span class="s2">- </span><span class="s1">height </span><span class="s2">* </span><span class="s1">scale </span><span class="s2">/ </span><span class="s5">2</span><span class="s2">;</span>
+
+				<span class="s4">// draw cursor</span>
+				<span class="s4">// g.setColor(Color.BLUE);</span>
+				<span class="s4">// g.drawOval(round(controller.mousePos.x * scale), round(controller.mousePos.y</span>
+				<span class="s4">// * scale), 10, 10);</span>
+
+				<span class="s0">for </span><span class="s2">(</span><span class="s0">int </span><span class="s1">y </span><span class="s2">= </span><span class="s5">0</span><span class="s2">; </span><span class="s1">y </span><span class="s2">&lt; </span><span class="s1">height</span><span class="s2">; </span><span class="s1">y</span><span class="s2">++)</span>
+					<span class="s0">for </span><span class="s2">(</span><span class="s0">int </span><span class="s1">x </span><span class="s2">= </span><span class="s5">0</span><span class="s2">; </span><span class="s1">x </span><span class="s2">&lt; </span><span class="s1">width</span><span class="s2">; </span><span class="s1">x</span><span class="s2">++) {</span>
+						<span class="s0">char </span><span class="s1">c </span><span class="s2">= </span><span class="s1">terrain</span><span class="s2">[</span><span class="s1">x</span><span class="s2">][</span><span class="s1">y</span><span class="s2">];</span>
+						<span class="s0">if </span><span class="s2">(</span><span class="s1">FIRST_TERRAIN </span><span class="s2">&lt;= </span><span class="s1">c </span><span class="s2">&amp;&amp; </span><span class="s1">c </span><span class="s2">&lt;= </span><span class="s1">LAST_TERRAIN </span><span class="s2">&amp;&amp; </span><span class="s1">c </span><span class="s2">!= </span><span class="s3">'#'</span><span class="s2">)</span>
+							<span class="s1">drawImage</span><span class="s2">(</span><span class="s1">g</span><span class="s2">, </span><span class="s1">ground</span><span class="s2">[</span><span class="s1">c </span><span class="s2">- </span><span class="s1">FIRST_TERRAIN</span><span class="s2">], </span><span class="s1">cameraX </span><span class="s2">+ (</span><span class="s1">x </span><span class="s2">+ </span><span class="s5">0.5</span><span class="s2">) * </span><span class="s1">scale</span><span class="s2">,</span>
+									<span class="s1">cameraY </span><span class="s2">+ (</span><span class="s1">y </span><span class="s2">+ </span><span class="s5">0.5</span><span class="s2">) * </span><span class="s1">scale</span><span class="s2">, </span><span class="s1">scale</span><span class="s2">, </span><span class="s5">0</span><span class="s2">);</span>
+					<span class="s2">}</span>
+
+				<span class="s0">double </span><span class="s1">dz </span><span class="s2">= -</span><span class="s1">zHeight </span><span class="s2">/ </span><span class="s1">zResolution</span><span class="s2">;</span>
+				<span class="s0">for </span><span class="s2">(</span><span class="s0">int </span><span class="s1">z </span><span class="s2">= </span><span class="s5">0</span><span class="s2">; </span><span class="s1">z </span><span class="s2">&lt; </span><span class="s1">zResolution</span><span class="s2">; </span><span class="s1">z</span><span class="s2">++) {</span>
+					<span class="s0">if </span><span class="s2">(</span><span class="s1">pengu</span><span class="s2">[</span><span class="s1">z</span><span class="s2">] != </span><span class="s0">null</span><span class="s2">)</span>
+						<span class="s0">for </span><span class="s2">(</span><span class="s1">Robot robot </span><span class="s2">: </span><span class="s1">robots</span><span class="s2">) {</span>
+							<span class="s1">Position pos </span><span class="s2">= </span><span class="s1">robot</span><span class="s2">.</span><span class="s1">getPosition</span><span class="s2">();</span>
+							<span class="s0">double </span><span class="s1">size </span><span class="s2">= </span><span class="s1">robot</span><span class="s2">.</span><span class="s1">getSize</span><span class="s2">();</span>
+							<span class="s0">double </span><span class="s1">wiggle </span><span class="s2">= </span><span class="s1">Math</span><span class="s2">.</span><span class="s1">sin</span><span class="s2">(</span><span class="s1">movingTime</span><span class="s2">.</span><span class="s1">get</span><span class="s2">(</span><span class="s1">robot</span><span class="s2">) / </span><span class="s5">3.0</span><span class="s2">) * </span><span class="s1">Math</span><span class="s2">.</span><span class="s1">toRadians</span><span class="s2">(</span><span class="s5">15</span><span class="s2">);</span>
+							<span class="s1">drawImage</span><span class="s2">(</span><span class="s1">g</span><span class="s2">, </span><span class="s1">pengu</span><span class="s2">[</span><span class="s1">z</span><span class="s2">], </span><span class="s1">cameraX </span><span class="s2">+ </span><span class="s1">pos</span><span class="s2">.</span><span class="s1">x </span><span class="s2">* </span><span class="s1">scale</span><span class="s2">,</span>
+									<span class="s1">cameraY </span><span class="s2">+ (</span><span class="s1">pos</span><span class="s2">.</span><span class="s1">y </span><span class="s2">+ </span><span class="s1">dz </span><span class="s2">* </span><span class="s1">z </span><span class="s2">* </span><span class="s1">size </span><span class="s2">* </span><span class="s5">1.5</span><span class="s2">) * </span><span class="s1">scale</span><span class="s2">, </span><span class="s1">scale </span><span class="s2">* </span><span class="s1">size</span><span class="s2">,</span>
+									<span class="s1">robot</span><span class="s2">.</span><span class="s1">getDirection</span><span class="s2">() + </span><span class="s1">wiggle</span><span class="s2">);</span>
+						<span class="s2">}</span>
+
+					<span class="s0">for </span><span class="s2">(</span><span class="s0">int </span><span class="s1">y </span><span class="s2">= </span><span class="s5">0</span><span class="s2">; </span><span class="s1">y </span><span class="s2">&lt; </span><span class="s1">height</span><span class="s2">; </span><span class="s1">y</span><span class="s2">++)</span>
+						<span class="s0">for </span><span class="s2">(</span><span class="s0">int </span><span class="s1">x </span><span class="s2">= </span><span class="s5">0</span><span class="s2">; </span><span class="s1">x </span><span class="s2">&lt; </span><span class="s1">width</span><span class="s2">; </span><span class="s1">x</span><span class="s2">++)</span>
+							<span class="s0">if </span><span class="s2">(</span><span class="s1">terrain</span><span class="s2">[</span><span class="s1">x</span><span class="s2">][</span><span class="s1">y</span><span class="s2">] == </span><span class="s3">'#' </span><span class="s2">&amp;&amp; </span><span class="s1">ice</span><span class="s2">[</span><span class="s1">z</span><span class="s2">] != </span><span class="s0">null</span><span class="s2">)</span>
+								<span class="s1">drawImage</span><span class="s2">(</span><span class="s1">g</span><span class="s2">, </span><span class="s1">ice</span><span class="s2">[</span><span class="s1">z</span><span class="s2">], </span><span class="s1">cameraX </span><span class="s2">+ (</span><span class="s1">x </span><span class="s2">+ </span><span class="s5">0.5</span><span class="s2">) * </span><span class="s1">scale</span><span class="s2">,</span>
+										<span class="s1">cameraY </span><span class="s2">+ (</span><span class="s1">y </span><span class="s2">+ </span><span class="s1">dz </span><span class="s2">* </span><span class="s1">z </span><span class="s2">* </span><span class="s5">1.2 </span><span class="s2">+ </span><span class="s5">0.5</span><span class="s2">) * </span><span class="s1">scale</span><span class="s2">, </span><span class="s1">scale</span><span class="s2">, </span><span class="s5">0</span><span class="s2">);</span>
+				<span class="s2">}</span>
+
+				<span class="s0">for </span><span class="s2">(</span><span class="s1">Robot robot </span><span class="s2">: </span><span class="s1">robots</span><span class="s2">) {</span>
+					<span class="s1">Position pos </span><span class="s2">= </span><span class="s1">robot</span><span class="s2">.</span><span class="s1">getPosition</span><span class="s2">();</span>
+					<span class="s0">double </span><span class="s1">size </span><span class="s2">= </span><span class="s1">robot</span><span class="s2">.</span><span class="s1">getSize</span><span class="s2">();</span>
+
+					<span class="s0">if </span><span class="s2">(</span><span class="s1">speechTimer</span><span class="s2">.</span><span class="s1">get</span><span class="s2">(</span><span class="s1">robot</span><span class="s2">) &gt; </span><span class="s5">0</span><span class="s2">) {</span>
+						<span class="s0">int </span><span class="s1">x </span><span class="s2">= (</span><span class="s0">int</span><span class="s2">) </span><span class="s1">Math</span><span class="s2">.</span><span class="s1">round</span><span class="s2">(</span><span class="s1">cameraX </span><span class="s2">+ (</span><span class="s1">pos</span><span class="s2">.</span><span class="s1">x </span><span class="s2">+ </span><span class="s5">0.25</span><span class="s2">) * </span><span class="s1">scale</span><span class="s2">);</span>
+						<span class="s0">int </span><span class="s1">y </span><span class="s2">= (</span><span class="s0">int</span><span class="s2">) </span><span class="s1">Math</span><span class="s2">.</span><span class="s1">round</span><span class="s2">(</span><span class="s1">cameraY </span><span class="s2">+ (</span><span class="s1">pos</span><span class="s2">.</span><span class="s1">y </span><span class="s2">- </span><span class="s1">zHeight </span><span class="s2">* </span><span class="s1">size </span><span class="s2">* </span><span class="s5">1.5</span><span class="s2">) * </span><span class="s1">scale</span><span class="s2">);</span>
+						<span class="s1">FontMetrics fm </span><span class="s2">= </span><span class="s1">g</span><span class="s2">.</span><span class="s1">getFontMetrics</span><span class="s2">();</span>
+						<span class="s0">int </span><span class="s1">arrowW </span><span class="s2">= </span><span class="s5">6</span><span class="s2">, </span><span class="s1">arrowH </span><span class="s2">= </span><span class="s5">10</span><span class="s2">;</span>
+						<span class="s0">int </span><span class="s1">w </span><span class="s2">= </span><span class="s1">Math</span><span class="s2">.</span><span class="s1">max</span><span class="s2">(</span><span class="s5">20</span><span class="s2">, </span><span class="s1">fm</span><span class="s2">.</span><span class="s1">stringWidth</span><span class="s2">(</span><span class="s1">speechBubble</span><span class="s2">.</span><span class="s1">get</span><span class="s2">(</span><span class="s1">robot</span><span class="s2">) + </span><span class="s5">2</span><span class="s2">)), </span><span class="s1">h </span><span class="s2">= </span><span class="s1">fm</span><span class="s2">.</span><span class="s1">getHeight</span><span class="s2">() + </span><span class="s5">2</span><span class="s2">;</span>
+						<span class="s0">int</span><span class="s2">[] </span><span class="s1">xP </span><span class="s2">= { </span><span class="s1">x</span><span class="s2">, </span><span class="s1">x </span><span class="s2">+ </span><span class="s1">arrowW</span><span class="s2">, </span><span class="s1">x </span><span class="s2">+ </span><span class="s1">w </span><span class="s2">- </span><span class="s1">arrowW</span><span class="s2">, </span><span class="s1">x </span><span class="s2">+ </span><span class="s1">w </span><span class="s2">- </span><span class="s1">arrowW</span><span class="s2">, </span><span class="s1">x </span><span class="s2">- </span><span class="s1">arrowW</span><span class="s2">, </span><span class="s1">x </span><span class="s2">- </span><span class="s1">arrowW</span><span class="s2">, </span><span class="s1">x </span><span class="s2">};</span>
+						<span class="s0">int</span><span class="s2">[] </span><span class="s1">yP </span><span class="s2">= { </span><span class="s1">y</span><span class="s2">, </span><span class="s1">y </span><span class="s2">- </span><span class="s1">arrowH</span><span class="s2">, </span><span class="s1">y </span><span class="s2">- </span><span class="s1">arrowH</span><span class="s2">, </span><span class="s1">y </span><span class="s2">- </span><span class="s1">arrowH </span><span class="s2">- </span><span class="s1">h</span><span class="s2">, </span><span class="s1">y </span><span class="s2">- </span><span class="s1">arrowH </span><span class="s2">- </span><span class="s1">h</span><span class="s2">, </span><span class="s1">y </span><span class="s2">- </span><span class="s1">arrowH</span><span class="s2">,</span>
+								<span class="s1">y </span><span class="s2">- </span><span class="s1">arrowH </span><span class="s2">};</span>
+						<span class="s1">g</span><span class="s2">.</span><span class="s1">setColor</span><span class="s2">(</span><span class="s1">Color</span><span class="s2">.</span><span class="s1">WHITE</span><span class="s2">);</span>
+						<span class="s1">g</span><span class="s2">.</span><span class="s1">fillPolygon</span><span class="s2">(</span><span class="s1">xP</span><span class="s2">, </span><span class="s1">yP</span><span class="s2">, </span><span class="s5">7</span><span class="s2">);</span>
+						<span class="s1">g</span><span class="s2">.</span><span class="s1">setColor</span><span class="s2">(</span><span class="s1">Color</span><span class="s2">.</span><span class="s1">BLACK</span><span class="s2">);</span>
+						<span class="s1">g</span><span class="s2">.</span><span class="s1">drawPolygon</span><span class="s2">(</span><span class="s1">xP</span><span class="s2">, </span><span class="s1">yP</span><span class="s2">, </span><span class="s5">7</span><span class="s2">);</span>
+						<span class="s1">g</span><span class="s2">.</span><span class="s1">drawString</span><span class="s2">(</span><span class="s1">speechBubble</span><span class="s2">.</span><span class="s1">get</span><span class="s2">(</span><span class="s1">robot</span><span class="s2">), </span><span class="s1">x</span><span class="s2">, </span><span class="s1">y </span><span class="s2">- </span><span class="s1">arrowH </span><span class="s2">- </span><span class="s5">5</span><span class="s2">);</span>
+					<span class="s2">}</span>
+				<span class="s2">}</span>
+			<span class="s2">}</span>
+
+			<span class="s0">private void </span><span class="s1">drawImage</span><span class="s2">(</span><span class="s1">Graphics g</span><span class="s2">, </span><span class="s1">BufferedImage img</span><span class="s2">, </span><span class="s0">double </span><span class="s1">x</span><span class="s2">, </span><span class="s0">double </span><span class="s1">y</span><span class="s2">, </span><span class="s0">double </span><span class="s1">scale</span><span class="s2">, </span><span class="s0">double </span><span class="s1">rot</span><span class="s2">) {</span>
+				<span class="s1">AffineTransform transform </span><span class="s2">= </span><span class="s0">new </span><span class="s1">AffineTransform</span><span class="s2">();</span>
+
+				<span class="s1">transform</span><span class="s2">.</span><span class="s1">translate</span><span class="s2">(</span><span class="s1">x</span><span class="s2">, </span><span class="s1">y</span><span class="s2">);</span>
+				<span class="s1">transform</span><span class="s2">.</span><span class="s1">rotate</span><span class="s2">(</span><span class="s1">rot</span><span class="s2">);</span>
+				<span class="s1">transform</span><span class="s2">.</span><span class="s1">scale</span><span class="s2">(</span><span class="s1">scale </span><span class="s2">/ </span><span class="s1">img</span><span class="s2">.</span><span class="s1">getWidth</span><span class="s2">(), </span><span class="s1">scale </span><span class="s2">/ </span><span class="s1">img</span><span class="s2">.</span><span class="s1">getHeight</span><span class="s2">());</span>
+				<span class="s1">transform</span><span class="s2">.</span><span class="s1">translate</span><span class="s2">(-</span><span class="s1">img</span><span class="s2">.</span><span class="s1">getWidth</span><span class="s2">() / </span><span class="s5">2.0</span><span class="s2">, -</span><span class="s1">img</span><span class="s2">.</span><span class="s1">getHeight</span><span class="s2">() / </span><span class="s5">2.0</span><span class="s2">);</span>
+
+				<span class="s2">((</span><span class="s1">Graphics2D</span><span class="s2">) </span><span class="s1">g</span><span class="s2">).</span><span class="s1">drawImage</span><span class="s2">(</span><span class="s1">img</span><span class="s2">, </span><span class="s1">transform</span><span class="s2">, </span><span class="s0">null</span><span class="s2">);</span>
+			<span class="s2">}</span>
+		<span class="s2">}</span>
+
+		<span class="s1">BufferedImage loadImage</span><span class="s2">(</span><span class="s1">String file</span><span class="s2">) {</span>
+			<span class="s0">try </span><span class="s2">{</span>
+				<span class="s0">return </span><span class="s1">ImageIO</span><span class="s2">.</span><span class="s1">read</span><span class="s2">(</span><span class="s1">World</span><span class="s2">.</span><span class="s0">this</span><span class="s2">.</span><span class="s1">getClass</span><span class="s2">().</span><span class="s1">getResource</span><span class="s2">(</span><span class="s3">&quot;img/&quot; </span><span class="s2">+ </span><span class="s1">file </span><span class="s2">+ </span><span class="s3">&quot;.png&quot;</span><span class="s2">));</span>
+			<span class="s2">} </span><span class="s0">catch </span><span class="s2">(</span><span class="s1">IOException </span><span class="s2">| </span><span class="s1">IllegalArgumentException e</span><span class="s2">) {</span>
+				<span class="s0">return null</span><span class="s2">;</span>
+			<span class="s2">}</span>
+		<span class="s2">}</span>
+
+		<span class="s1">BufferedImage</span><span class="s2">[] </span><span class="s1">load3DImage</span><span class="s2">(</span><span class="s1">String filePrefix</span><span class="s2">) {</span>
+			<span class="s1">BufferedImage</span><span class="s2">[] </span><span class="s1">images </span><span class="s2">= </span><span class="s0">new </span><span class="s1">BufferedImage</span><span class="s2">[</span><span class="s1">zResolution</span><span class="s2">];</span>
+			<span class="s0">for </span><span class="s2">(</span><span class="s0">int </span><span class="s1">i </span><span class="s2">= </span><span class="s5">0</span><span class="s2">; </span><span class="s1">i </span><span class="s2">&lt; </span><span class="s1">zResolution</span><span class="s2">; </span><span class="s1">i</span><span class="s2">++)</span>
+				<span class="s1">images</span><span class="s2">[</span><span class="s1">i</span><span class="s2">] = </span><span class="s1">loadImage</span><span class="s2">(</span><span class="s1">filePrefix </span><span class="s2">+ </span><span class="s1">i</span><span class="s2">);</span>
+			<span class="s0">return </span><span class="s1">images</span><span class="s2">;</span>
+		<span class="s2">}</span>
+
+		<span class="s1">BufferedImage overlayChar</span><span class="s2">(</span><span class="s1">BufferedImage background</span><span class="s2">, </span><span class="s0">char </span><span class="s1">c</span><span class="s2">) {</span>
+			<span class="s0">int </span><span class="s1">w </span><span class="s2">= </span><span class="s1">background</span><span class="s2">.</span><span class="s1">getWidth</span><span class="s2">(), </span><span class="s1">h </span><span class="s2">= </span><span class="s1">background</span><span class="s2">.</span><span class="s1">getHeight</span><span class="s2">();</span>
+			<span class="s1">BufferedImage img </span><span class="s2">= </span><span class="s0">new </span><span class="s1">BufferedImage</span><span class="s2">(</span><span class="s1">w</span><span class="s2">, </span><span class="s1">h</span><span class="s2">, </span><span class="s1">BufferedImage</span><span class="s2">.</span><span class="s1">TYPE_INT_ARGB</span><span class="s2">);</span>
+			<span class="s1">Graphics2D g </span><span class="s2">= </span><span class="s1">img</span><span class="s2">.</span><span class="s1">createGraphics</span><span class="s2">();</span>
+			<span class="s1">g</span><span class="s2">.</span><span class="s1">drawImage</span><span class="s2">(</span><span class="s1">background</span><span class="s2">, </span><span class="s5">0</span><span class="s2">, </span><span class="s5">0</span><span class="s2">, </span><span class="s1">w</span><span class="s2">, </span><span class="s1">h</span><span class="s2">, </span><span class="s0">null</span><span class="s2">);</span>
+			<span class="s1">g</span><span class="s2">.</span><span class="s1">setPaint</span><span class="s2">(</span><span class="s1">Color</span><span class="s2">.</span><span class="s1">BLACK</span><span class="s2">);</span>
+			<span class="s1">FontMetrics fm </span><span class="s2">= </span><span class="s1">g</span><span class="s2">.</span><span class="s1">getFontMetrics</span><span class="s2">();</span>
+			<span class="s1">g</span><span class="s2">.</span><span class="s1">drawString</span><span class="s2">(</span><span class="s1">String</span><span class="s2">.</span><span class="s1">valueOf</span><span class="s2">(</span><span class="s1">c</span><span class="s2">), </span><span class="s1">w </span><span class="s2">/ </span><span class="s5">2 </span><span class="s2">- </span><span class="s1">fm</span><span class="s2">.</span><span class="s1">stringWidth</span><span class="s2">(</span><span class="s1">String</span><span class="s2">.</span><span class="s1">valueOf</span><span class="s2">(</span><span class="s1">c</span><span class="s2">)) / </span><span class="s5">2</span><span class="s2">, </span><span class="s1">fm</span><span class="s2">.</span><span class="s1">getHeight</span><span class="s2">() - </span><span class="s5">4</span><span class="s2">);</span>
+			<span class="s1">g</span><span class="s2">.</span><span class="s1">dispose</span><span class="s2">();</span>
+			<span class="s0">return </span><span class="s1">img</span><span class="s2">;</span>
+		<span class="s2">}</span>
+	<span class="s2">}</span>
+<span class="s2">}</span>
+</pre>
+</body>
+</html>

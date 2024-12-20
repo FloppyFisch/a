@@ -1,0 +1,242 @@
+<html>
+<head>
+<title>Robot.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cf8e6d;}
+.s1 { color: #bcbec4;}
+.s2 { color: #bcbec4;}
+.s3 { color: #5f826b; font-style: italic;}
+.s4 { color: #7a7e85;}
+.s5 { color: #2aacb8;}
+.s6 { color: #6aab73;}
+</style>
+</head>
+<body bgcolor="#1e1f22">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+Robot.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">pgdp</span><span class="s2">.</span><span class="s1">robot</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">util</span><span class="s2">.*;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">util</span><span class="s2">.</span><span class="s1">function</span><span class="s2">.</span><span class="s1">Function</span><span class="s2">;</span>
+
+<span class="s0">public class </span><span class="s1">Robot </span><span class="s2">{</span>
+
+	<span class="s3">/// Attributes</span>
+
+	<span class="s4">// final attributes</span>
+	<span class="s0">private final </span><span class="s1">String name</span><span class="s2">;</span>
+	<span class="s0">private final double </span><span class="s1">size</span><span class="s2">;</span>
+
+	<span class="s0">protected final </span><span class="s1">FailureSimulator failureSimulator</span><span class="s2">;</span>
+
+	<span class="s4">// internal states</span>
+	<span class="s0">private </span><span class="s1">Position position </span><span class="s2">= </span><span class="s0">new </span><span class="s1">Position</span><span class="s2">();</span>
+	<span class="s0">private double </span><span class="s1">direction</span><span class="s2">;</span>
+	<span class="s0">private </span><span class="s1">World world</span><span class="s2">;</span>
+
+	<span class="s0">private </span><span class="s1">String key</span><span class="s2">;</span>
+	<span class="s0">private </span><span class="s1">World</span><span class="s2">.</span><span class="s1">Scepter scepter</span><span class="s2">;</span>
+
+	<span class="s0">private </span><span class="s1">List</span><span class="s2">&lt;</span><span class="s1">Sensor</span><span class="s2">&lt;?&gt;&gt; </span><span class="s1">sensors</span><span class="s2">;</span>
+	<span class="s0">private </span><span class="s1">List</span><span class="s2">&lt;</span><span class="s1">Memory</span><span class="s2">&lt;?&gt;&gt; </span><span class="s1">memory</span><span class="s2">;</span>
+	<span class="s0">private </span><span class="s1">Function</span><span class="s2">&lt;</span><span class="s1">Robot</span><span class="s2">,</span><span class="s1">List</span><span class="s2">&lt;</span><span class="s1">Command</span><span class="s2">&gt;&gt; </span><span class="s1">program</span><span class="s2">;</span>
+	<span class="s0">private </span><span class="s1">Queue</span><span class="s2">&lt;</span><span class="s1">Command</span><span class="s2">&gt; </span><span class="s1">todo</span><span class="s2">;</span>
+
+	<span class="s3">/// Methods</span>
+	<span class="s0">public </span><span class="s1">Robot</span><span class="s2">(</span><span class="s1">String name</span><span class="s2">, </span><span class="s0">double </span><span class="s1">direction</span><span class="s2">, </span><span class="s0">double </span><span class="s1">size</span><span class="s2">, </span><span class="s1">FailureSimulator failureSimulator</span><span class="s2">) {</span>
+		<span class="s0">this</span><span class="s2">.</span><span class="s1">name </span><span class="s2">= </span><span class="s1">name</span><span class="s2">;</span>
+		<span class="s0">this</span><span class="s2">.</span><span class="s1">direction </span><span class="s2">= </span><span class="s1">direction</span><span class="s2">;</span>
+		<span class="s0">this</span><span class="s2">.</span><span class="s1">size </span><span class="s2">= </span><span class="s1">Math</span><span class="s2">.</span><span class="s1">min</span><span class="s2">(</span><span class="s1">Math</span><span class="s2">.</span><span class="s1">max</span><span class="s2">(</span><span class="s5">0.5</span><span class="s2">, </span><span class="s1">size</span><span class="s2">), </span><span class="s5">1</span><span class="s2">); </span><span class="s4">// between 0.5 and 1</span>
+		<span class="s0">this</span><span class="s2">.</span><span class="s1">failureSimulator </span><span class="s2">= </span><span class="s1">failureSimulator</span><span class="s2">;</span>
+		<span class="s1">sensors </span><span class="s2">= </span><span class="s0">new </span><span class="s1">ArrayList</span><span class="s2">&lt;&gt;();</span>
+		<span class="s1">memory </span><span class="s2">= </span><span class="s0">new </span><span class="s1">ArrayList</span><span class="s2">&lt;&gt;();</span>
+		<span class="s1">program </span><span class="s2">= </span><span class="s0">new </span><span class="s1">Function</span><span class="s2">&lt;</span><span class="s1">Robot</span><span class="s2">, </span><span class="s1">List</span><span class="s2">&lt;</span><span class="s1">Command</span><span class="s2">&gt;&gt;() {</span>
+			<span class="s1">@Override</span>
+			<span class="s0">public </span><span class="s1">List</span><span class="s2">&lt;</span><span class="s1">Command</span><span class="s2">&gt; </span><span class="s1">apply</span><span class="s2">(</span><span class="s1">Robot robot</span><span class="s2">) {</span>
+				<span class="s0">return </span><span class="s1">List</span><span class="s2">.</span><span class="s1">of</span><span class="s2">();</span>
+			<span class="s2">}</span>
+		<span class="s2">};</span>
+		<span class="s1">todo </span><span class="s2">= </span><span class="s0">new </span><span class="s1">ArrayDeque</span><span class="s2">&lt;&gt;();</span>
+	<span class="s2">}</span>
+
+	<span class="s0">public void </span><span class="s1">attachSensor</span><span class="s2">(</span><span class="s1">Sensor</span><span class="s2">&lt;?&gt; </span><span class="s1">sensor</span><span class="s2">){</span>
+		<span class="s1">sensor</span><span class="s2">.</span><span class="s1">setOwner</span><span class="s2">(</span><span class="s0">this</span><span class="s2">);</span>
+		<span class="s1">sensors</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">sensor</span><span class="s2">);</span>
+	<span class="s2">}</span>
+
+	<span class="s0">public </span><span class="s2">&lt;</span><span class="s1">T</span><span class="s2">&gt; </span><span class="s1">Memory</span><span class="s2">&lt;</span><span class="s1">T</span><span class="s2">&gt; </span><span class="s1">createMemory</span><span class="s2">(</span><span class="s1">Memory</span><span class="s2">&lt;</span><span class="s1">T</span><span class="s2">&gt; </span><span class="s1">memory</span><span class="s2">){</span>
+		<span class="s0">this</span><span class="s2">.</span><span class="s1">memory</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">memory</span><span class="s2">);</span>
+		<span class="s0">return </span><span class="s1">memory</span><span class="s2">;</span>
+	<span class="s2">}</span>
+
+	<span class="s0">public </span><span class="s1">String memoryToString</span><span class="s2">(){</span>
+		<span class="s1">StringBuilder string </span><span class="s2">= </span><span class="s0">new </span><span class="s1">StringBuilder</span><span class="s2">();</span>
+		<span class="s0">for </span><span class="s2">(</span><span class="s1">Memory</span><span class="s2">&lt;?&gt; </span><span class="s1">memory </span><span class="s2">: </span><span class="s0">this</span><span class="s2">.</span><span class="s1">memory</span><span class="s2">) {</span>
+			<span class="s1">string</span><span class="s2">.</span><span class="s1">append</span><span class="s2">(</span><span class="s6">'['</span><span class="s2">);</span>
+			<span class="s1">string</span><span class="s2">.</span><span class="s1">append</span><span class="s2">(</span><span class="s1">memory</span><span class="s2">.</span><span class="s1">toString</span><span class="s2">());</span>
+			<span class="s1">string</span><span class="s2">.</span><span class="s1">append</span><span class="s2">(</span><span class="s6">']'</span><span class="s2">);</span>
+		<span class="s2">}</span>
+		<span class="s0">return </span><span class="s1">string</span><span class="s2">.</span><span class="s1">toString</span><span class="s2">();</span>
+	<span class="s2">}</span>
+
+	<span class="s0">public void </span><span class="s1">setProgram</span><span class="s2">(</span><span class="s1">Function</span><span class="s2">&lt;</span><span class="s1">Robot</span><span class="s2">, </span><span class="s1">List</span><span class="s2">&lt;</span><span class="s1">Command</span><span class="s2">&gt;&gt; </span><span class="s1">program</span><span class="s2">) {</span>
+		<span class="s0">this</span><span class="s2">.</span><span class="s1">program </span><span class="s2">= </span><span class="s1">program</span><span class="s2">;</span>
+	<span class="s2">}</span>
+
+	<span class="s0">private </span><span class="s2">&lt;</span><span class="s1">T</span><span class="s2">&gt; </span><span class="s0">void </span><span class="s1">processSensor</span><span class="s2">(</span><span class="s1">Sensor</span><span class="s2">&lt;</span><span class="s1">T</span><span class="s2">&gt; </span><span class="s1">sensor</span><span class="s2">) </span><span class="s0">throws </span><span class="s1">MalfunctionException </span><span class="s2">{</span>
+		<span class="s1">sensor</span><span class="s2">.</span><span class="s1">processor</span><span class="s2">.</span><span class="s1">accept</span><span class="s2">(</span><span class="s1">sensor</span><span class="s2">.</span><span class="s1">getData</span><span class="s2">());</span>
+	<span class="s2">}</span>
+
+	<span class="s0">private void </span><span class="s1">sense</span><span class="s2">(){</span>
+		<span class="s0">for</span><span class="s2">(</span><span class="s0">int </span><span class="s1">i </span><span class="s2">= </span><span class="s5">0</span><span class="s2">; </span><span class="s1">i </span><span class="s2">&lt; </span><span class="s1">sensors</span><span class="s2">.</span><span class="s1">size</span><span class="s2">(); </span><span class="s1">i</span><span class="s2">++){</span>
+			<span class="s1">Sensor</span><span class="s2">&lt;?&gt; </span><span class="s1">sensor </span><span class="s2">= </span><span class="s1">sensors</span><span class="s2">.</span><span class="s1">get</span><span class="s2">(</span><span class="s1">i</span><span class="s2">);</span>
+            <span class="s0">try </span><span class="s2">{</span>
+                <span class="s1">processSensor</span><span class="s2">(</span><span class="s1">sensor</span><span class="s2">);</span>
+            <span class="s2">} </span><span class="s0">catch </span><span class="s2">(</span><span class="s1">MalfunctionException e</span><span class="s2">) {</span>
+				<span class="s1">Sensor</span><span class="s2">&lt;?&gt; </span><span class="s1">temp </span><span class="s2">= </span><span class="s1">sensor</span><span class="s2">.</span><span class="s1">createNewSensor</span><span class="s2">();</span>
+                <span class="s1">sensors</span><span class="s2">.</span><span class="s1">remove</span><span class="s2">(</span><span class="s1">sensor</span><span class="s2">);</span>
+				<span class="s1">sensors</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">temp</span><span class="s2">);</span>
+				<span class="s1">sense</span><span class="s2">();</span>
+            <span class="s2">}</span>
+        <span class="s2">}</span>
+	<span class="s2">}</span>
+
+	<span class="s0">private void </span><span class="s1">think</span><span class="s2">(){</span>
+		<span class="s1">todo</span><span class="s2">.</span><span class="s1">addAll</span><span class="s2">(</span><span class="s1">program</span><span class="s2">.</span><span class="s1">apply</span><span class="s2">(</span><span class="s0">this</span><span class="s2">));</span>
+	<span class="s2">}</span>
+
+	<span class="s0">private void </span><span class="s1">act</span><span class="s2">(){</span>
+		<span class="s0">while</span><span class="s2">(!</span><span class="s1">todo</span><span class="s2">.</span><span class="s1">isEmpty</span><span class="s2">()){</span>
+			<span class="s0">if</span><span class="s2">(!</span><span class="s1">todo</span><span class="s2">.</span><span class="s1">poll</span><span class="s2">().</span><span class="s1">execute</span><span class="s2">(</span><span class="s0">this</span><span class="s2">)){</span>
+				<span class="s0">break</span><span class="s2">;</span>
+			<span class="s2">}</span>
+		<span class="s2">}</span>
+	<span class="s2">}</span>
+
+	<span class="s0">public void </span><span class="s1">work</span><span class="s2">(){</span>
+		<span class="s0">if</span><span class="s2">(</span><span class="s1">todo</span><span class="s2">.</span><span class="s1">isEmpty</span><span class="s2">()){</span>
+			<span class="s1">sense</span><span class="s2">();</span>
+			<span class="s1">think</span><span class="s2">();</span>
+		<span class="s2">}</span>
+		<span class="s1">act</span><span class="s2">();</span>
+	<span class="s2">}</span>
+
+	<span class="s0">public </span><span class="s1">List</span><span class="s2">&lt;</span><span class="s1">Memory</span><span class="s2">&lt;?&gt;&gt; </span><span class="s1">getMemories</span><span class="s2">(){</span>
+		<span class="s0">return </span><span class="s1">memory</span><span class="s2">;</span>
+	<span class="s2">}</span>
+
+	<span class="s3">/// Pre-programmed Commands</span>
+	<span class="s0">public boolean </span><span class="s1">go</span><span class="s2">(</span><span class="s0">double </span><span class="s1">distance</span><span class="s2">) {</span>
+		<span class="s4">// step can be negative if the penguin walks backwards</span>
+		<span class="s0">double </span><span class="s1">sign </span><span class="s2">= </span><span class="s1">Math</span><span class="s2">.</span><span class="s1">signum</span><span class="s2">(</span><span class="s1">distance</span><span class="s2">);</span>
+		<span class="s1">distance </span><span class="s2">= </span><span class="s1">Math</span><span class="s2">.</span><span class="s1">abs</span><span class="s2">(</span><span class="s1">distance</span><span class="s2">);</span>
+		<span class="s4">// penguin walks, each step being 0.2m</span>
+		<span class="s0">while </span><span class="s2">(</span><span class="s1">distance </span><span class="s2">&gt; </span><span class="s5">0</span><span class="s2">) {</span>
+			<span class="s1">position</span><span class="s2">.</span><span class="s1">moveBy</span><span class="s2">(</span><span class="s1">sign </span><span class="s2">* </span><span class="s1">Math</span><span class="s2">.</span><span class="s1">min</span><span class="s2">(</span><span class="s1">distance</span><span class="s2">, </span><span class="s5">0.2</span><span class="s2">), </span><span class="s1">direction</span><span class="s2">);</span>
+			<span class="s1">world</span><span class="s2">.</span><span class="s1">resolveCollision</span><span class="s2">(</span><span class="s0">this</span><span class="s2">, </span><span class="s1">position</span><span class="s2">);</span>
+			<span class="s1">distance </span><span class="s2">-= </span><span class="s5">0.2</span><span class="s2">;</span>
+		<span class="s2">}</span>
+		<span class="s0">return true</span><span class="s2">;</span>
+	<span class="s2">}</span>
+
+	<span class="s0">public boolean </span><span class="s1">turnBy</span><span class="s2">(</span><span class="s0">double </span><span class="s1">deltaDirection</span><span class="s2">) {</span>
+		<span class="s1">direction </span><span class="s2">+= </span><span class="s1">deltaDirection</span><span class="s2">;</span>
+		<span class="s0">return true</span><span class="s2">;</span>
+	<span class="s2">}</span>
+
+	<span class="s0">public boolean </span><span class="s1">turnTo</span><span class="s2">(</span><span class="s0">double </span><span class="s1">newDirection</span><span class="s2">) {</span>
+		<span class="s1">direction </span><span class="s2">= </span><span class="s1">newDirection</span><span class="s2">;</span>
+		<span class="s0">return true</span><span class="s2">;</span>
+	<span class="s2">}</span>
+
+	<span class="s0">public boolean </span><span class="s1">say</span><span class="s2">(</span><span class="s1">String text</span><span class="s2">) {</span>
+		<span class="s1">world</span><span class="s2">.</span><span class="s1">say</span><span class="s2">(</span><span class="s0">this</span><span class="s2">, </span><span class="s1">text</span><span class="s2">);</span>
+		<span class="s0">return true</span><span class="s2">;</span>
+	<span class="s2">}</span>
+
+	<span class="s0">public boolean </span><span class="s1">paintWorld</span><span class="s2">(</span><span class="s1">Position pos</span><span class="s2">, </span><span class="s0">char </span><span class="s1">blockType</span><span class="s2">) {</span>
+		<span class="s1">world</span><span class="s2">.</span><span class="s1">setTerrain</span><span class="s2">(</span><span class="s1">pos</span><span class="s2">, </span><span class="s1">blockType</span><span class="s2">);</span>
+		<span class="s0">return true</span><span class="s2">;</span>
+	<span class="s2">}</span>
+
+	<span class="s3">/// Getters and Setters</span>
+	<span class="s0">public </span><span class="s1">String getName</span><span class="s2">() {</span>
+		<span class="s0">return </span><span class="s1">name</span><span class="s2">;</span>
+	<span class="s2">}</span>
+
+	<span class="s0">public double </span><span class="s1">getSize</span><span class="s2">() {</span>
+		<span class="s0">return </span><span class="s1">size</span><span class="s2">;</span>
+	<span class="s2">}</span>
+
+	<span class="s0">public </span><span class="s1">Position getPosition</span><span class="s2">() {</span>
+		<span class="s0">return new </span><span class="s1">Position</span><span class="s2">(</span><span class="s1">position</span><span class="s2">);</span>
+	<span class="s2">}</span>
+
+	<span class="s0">public int </span><span class="s1">getRoundedX</span><span class="s2">() {</span>
+		<span class="s0">return </span><span class="s2">(</span><span class="s0">int</span><span class="s2">) </span><span class="s1">Math</span><span class="s2">.</span><span class="s1">floor</span><span class="s2">(</span><span class="s1">position</span><span class="s2">.</span><span class="s1">x</span><span class="s2">);</span>
+	<span class="s2">}</span>
+
+	<span class="s0">public int </span><span class="s1">getRoundedY</span><span class="s2">() {</span>
+		<span class="s0">return </span><span class="s2">(</span><span class="s0">int</span><span class="s2">) </span><span class="s1">Math</span><span class="s2">.</span><span class="s1">floor</span><span class="s2">(</span><span class="s1">position</span><span class="s2">.</span><span class="s1">y</span><span class="s2">);</span>
+	<span class="s2">}</span>
+
+	<span class="s0">public double </span><span class="s1">getDirection</span><span class="s2">() {</span>
+		<span class="s0">return </span><span class="s1">direction</span><span class="s2">;</span>
+	<span class="s2">}</span>
+
+	<span class="s0">public </span><span class="s1">World getWorld</span><span class="s2">() {</span>
+		<span class="s0">return </span><span class="s1">world</span><span class="s2">;</span>
+	<span class="s2">}</span>
+
+	<span class="s0">public </span><span class="s1">String getKey</span><span class="s2">() {</span>
+		<span class="s0">return </span><span class="s1">key</span><span class="s2">;</span>
+	<span class="s2">}</span>
+
+	<span class="s0">public void </span><span class="s1">setKey</span><span class="s2">(</span><span class="s1">String key</span><span class="s2">) {</span>
+		<span class="s0">this</span><span class="s2">.</span><span class="s1">key </span><span class="s2">= </span><span class="s1">key</span><span class="s2">;</span>
+	<span class="s2">}</span>
+
+	<span class="s0">public </span><span class="s1">World</span><span class="s2">.</span><span class="s1">Scepter getScepter</span><span class="s2">() {</span>
+		<span class="s0">return </span><span class="s1">scepter</span><span class="s2">;</span>
+	<span class="s2">}</span>
+
+	<span class="s0">public void </span><span class="s1">setScepter</span><span class="s2">(</span><span class="s1">World</span><span class="s2">.</span><span class="s1">Scepter scepter</span><span class="s2">) {</span>
+		<span class="s0">this</span><span class="s2">.</span><span class="s1">scepter </span><span class="s2">= </span><span class="s1">scepter</span><span class="s2">;</span>
+	<span class="s2">}</span>
+
+	<span class="s0">public void </span><span class="s1">spawnInWorld</span><span class="s2">(</span><span class="s1">World world</span><span class="s2">, </span><span class="s0">char </span><span class="s1">spawnMarker</span><span class="s2">) {</span>
+		<span class="s0">this</span><span class="s2">.</span><span class="s1">world </span><span class="s2">= </span><span class="s1">world</span><span class="s2">;</span>
+		<span class="s0">this</span><span class="s2">.</span><span class="s1">position </span><span class="s2">= </span><span class="s0">new </span><span class="s1">Position</span><span class="s2">(</span><span class="s1">world</span><span class="s2">.</span><span class="s1">spawnRobotAt</span><span class="s2">(</span><span class="s0">this</span><span class="s2">, </span><span class="s1">spawnMarker</span><span class="s2">));</span>
+	<span class="s2">}</span>
+
+	<span class="s1">@Override</span>
+	<span class="s0">public </span><span class="s1">String toString</span><span class="s2">() {</span>
+		<span class="s0">return </span><span class="s6">&quot;</span><span class="s0">\&quot;</span><span class="s6">&quot; </span><span class="s2">+ </span><span class="s1">name </span><span class="s2">+ </span><span class="s6">&quot;</span><span class="s0">\&quot; </span><span class="s6">position=&quot; </span><span class="s2">+ </span><span class="s1">position </span><span class="s2">+ </span><span class="s6">&quot; direction=&quot;</span>
+				<span class="s2">+ (((</span><span class="s0">int</span><span class="s2">) (</span><span class="s1">Math</span><span class="s2">.</span><span class="s1">toDegrees</span><span class="s2">(</span><span class="s1">direction</span><span class="s2">) * </span><span class="s5">100</span><span class="s2">) / </span><span class="s5">100.0</span><span class="s2">));</span>
+	<span class="s2">}</span>
+
+	<span class="s0">public static interface </span><span class="s1">FailureSimulator </span><span class="s2">{</span>
+		<span class="s0">double </span><span class="s1">getNextRandom</span><span class="s2">();</span>
+	<span class="s2">}</span>
+
+	<span class="s0">public static class </span><span class="s1">SimpleFailureSimulator </span><span class="s0">implements </span><span class="s1">FailureSimulator </span><span class="s2">{</span>
+
+		<span class="s0">private </span><span class="s1">Random random</span><span class="s2">;</span>
+
+		<span class="s0">public </span><span class="s1">SimpleFailureSimulator</span><span class="s2">(</span><span class="s0">int </span><span class="s1">seed</span><span class="s2">) {</span>
+			<span class="s0">this</span><span class="s2">.</span><span class="s1">random </span><span class="s2">= </span><span class="s0">new </span><span class="s1">Random</span><span class="s2">(</span><span class="s1">seed</span><span class="s2">);</span>
+		<span class="s2">}</span>
+
+		<span class="s1">@Override</span>
+		<span class="s0">public double </span><span class="s1">getNextRandom</span><span class="s2">() {</span>
+			<span class="s0">return </span><span class="s1">random</span><span class="s2">.</span><span class="s1">nextDouble</span><span class="s2">();</span>
+		<span class="s2">}</span>
+	<span class="s2">}</span>
+<span class="s2">}</span>
+</pre>
+</body>
+</html>
